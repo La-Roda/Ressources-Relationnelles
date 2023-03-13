@@ -33,7 +33,7 @@
     width: 50vw;
     max-width: 500px;
     background-color: transparent !important;
-    border: 1px solid white;
+    border: 2px solid white;
 }
 </style>
 
