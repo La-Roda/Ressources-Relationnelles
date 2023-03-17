@@ -1,5 +1,5 @@
 # Ressources-Relationnelles
-Cesi's Project
+Projet forum CESI
 
 
 ### Synthaxe des noms de Branches
