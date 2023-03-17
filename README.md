@@ -13,7 +13,7 @@ Exemple :
 ```
 
 
-###Synthaxe des Commits
+### Synthaxe des Commits
 ```
   RR : [message du commit]
   
