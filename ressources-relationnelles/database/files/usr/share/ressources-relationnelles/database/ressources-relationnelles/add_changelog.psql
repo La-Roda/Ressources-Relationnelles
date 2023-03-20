@@ -1,0 +1,27 @@
+CREATE TABLE schemachangelog(
+  id SERIAL NOT NULL,
+  major INTEGER NOT NULL,
+  minor INTEGER NOT NULL,
+  point INTEGER NOT NULL,
+  script_name TEXT NOT NULL,
+  ts TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  script_status INTEGER,
+  CONSTRAINT idx_schemachangelog_id_PRIMARY PRIMARY KEY (id)
+
+);
+
+INSERT INTO schemachangelog (major, minor, point, script_name, script_status, ts) VALUES (1, 0, 0, 'Initial install', 0, CURRENT_TIMESTAMP);
+
+CREATE VIEW changelog AS
+SELECT
+  id,
+  format('%s.%s.%04s', major, minor, to_char(point, 'fm0000')) AS version,
+  script_name,
+  CASE
+    WHEN script_status = '0' THEN 'applied'
+    WHEN script_status = '1' THEN 'in progress'
+    ELSE 'error' END AS script_status,
+  ts
+FROM schemachangelog
+ORDER BY id
+;
