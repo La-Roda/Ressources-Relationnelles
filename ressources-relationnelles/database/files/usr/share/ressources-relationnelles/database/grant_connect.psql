@@ -1,0 +1,6 @@
+-- ---------------------------------------------------------------------
+-- Grant connect
+-- ---------------------------------------------------------------------
+\set dq_database_name '"' :database_name '"'
+GRANT CONNECT ON DATABASE :dq_database_name TO "www-data";
+

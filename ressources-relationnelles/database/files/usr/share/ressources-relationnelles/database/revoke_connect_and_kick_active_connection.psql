@@ -1,0 +1,39 @@
+-- ---------------------------------------------------------------------
+-- Revoke and kick active users
+-- ---------------------------------------------------------------------
+\set dq_database_name '"' :database_name '"'
+\set sq_database_name '''' :database_name ''''
+
+DO $$
+BEGIN
+  DECLARE
+  err_context TEXT;
+  user_name TEXT;
+  db_name TEXT;
+  BEGIN
+    SELECT current_database() FROM current_catalog INTO db_name;
+    EXECUTE 'REVOKE CONNECT ON DATABASE ' || '"' || db_name || '" FROM PUBLIC';
+    FOR user_name IN
+      SELECT
+        u.usename
+      FROM
+        pg_database db
+        CROSS JOIN pg_user u
+      WHERE
+        has_database_privilege(u.usename, db.datname, 'CONNECT')
+        AND u.usename != 'postgres'
+        AND db.datname = db_name
+    LOOP
+        EXECUTE 'REVOKE CONNECT ON DATABASE ' || '"' || db_name || '" FROM "' || user_name || '"';
+    END LOOP;
+  END;
+END; $$ LANGUAGE plpgsql;
+
+SELECT
+    pg_terminate_backend(pid) 
+FROM 
+    pg_stat_activity 
+WHERE 
+    pid <> pg_backend_pid()
+    AND datname = :sq_database_name
+;

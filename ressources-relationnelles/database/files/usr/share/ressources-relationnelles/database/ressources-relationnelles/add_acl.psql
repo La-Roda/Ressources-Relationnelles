@@ -1,0 +1,27 @@
+-- -----------------------------------------------------
+-- Add add_acl
+-- -----------------------------------------------------
+\echo '####### Creating user www-data..................................'
+DO $$
+BEGIN
+  DECLARE
+  err_context TEXT;
+  BEGIN
+    CREATE USER "www-data";
+    EXCEPTION
+    WHEN SQLSTATE '42710' THEN
+      RAISE INFO 'User Already created.';
+    WHEN others THEN
+      GET STACKED DIAGNOSTICS err_context = PG_EXCEPTION_CONTEXT;
+      RAISE INFO 'Error Name:%',SQLERRM;
+      RAISE INFO 'Error State:%', SQLSTATE;
+      RAISE EXCEPTION 'Error Context:%', err_context;
+  END;
+END; $$ LANGUAGE plpgsql;
+
+\echo '### Granting privileges for Schema public.......................'
+\echo '####### Granting privileges to user www-data....................'
+GRANT SELECT, UPDATE, INSERT, DELETE ON ALL TABLES IN SCHEMA "public" TO "www-data";
+GRANT USAGE, SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA "public" TO "www-data";
+GRANT ALL PRIVILEGES ON ALL FUNCTIONS IN SCHEMA "public" TO "www-data";
+GRANT CONNECT ON DATABASE :dq_database_name TO "www-data";
