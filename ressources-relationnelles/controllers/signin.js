@@ -133,9 +133,9 @@ function resetPasswordAction(params, post, session) {
     user.update();
 
     const to = user.getEmail();
-    const subject = 'Changement de mot de passe E-EVENT.IO !';
+    const subject = 'Changement de mot de passe !';
     const message = 'Votre mot de passe a été réinitialisé' + "\n" +
-        'Voici vos identifiants pour se connecter à E-event.io' + "\n" +
+        'Voici vos identifiants pour se connecter aux Ressources Rellationnelles' + "\n" +
         'Email: ' + user.getEmail() + "\n" +
         'Mot de passe: ' + password + "\n" +
         'Votre mot de passe est généré aléatoirement, vous devrez le changer lors de votre première connexion.';
