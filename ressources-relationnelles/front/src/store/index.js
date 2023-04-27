@@ -8,6 +8,11 @@ export default createStore({
   mutations: {
   },
   actions: {
+    // async getUser({commit, state}) {
+    //   const user = await this.$httpBuilder()
+    //   .addParam(['authentification', 'user'])
+    //   .send();
+    // }
   },
   modules: {
   }

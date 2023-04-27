@@ -1,27 +1,24 @@
 <template>
-  <v-app>
-  <v-app-bar color="#009C9B">
-    <headerComponent></headerComponent>
-  </v-app-bar>
-    <v-main>
-        <router-view/>
-    </v-main>
-  </v-app>
+  <logged-out v-if="!cookieAuth"></logged-out>
+  <defaultLayout v-else></defaultLayout>
 </template>
 <style>
 
 </style>
 <script>
-import headerComponent from './components/header.vue';
+import loggedOut from './layouts/logged-out.vue'
+import defaultLayout from './layouts/default-layout.vue'
+
 export default {
   name: 'App',
   components: {
-    headerComponent
+    loggedOut,
+    defaultLayout
   },
-  data () {
-    return {
-      //
-    }
+  data() {
+        return {
+            cookieAuth: null
+        }
   },
 }
 </script>
