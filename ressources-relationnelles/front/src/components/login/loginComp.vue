@@ -20,6 +20,7 @@
 }
 </style>
 <script>
+import axios from 'axios'
 export default {
     data() {
         return {
@@ -28,9 +29,10 @@ export default {
         }
     },
     methods: {
-        initLogin() {
-            this.$emit('initLogin', this.login, this.password)
+        async initLogin() {
+            // this.$emit('initLogin', this.login, this.password)
+            this.$store.dispatch('login', { email: this.login, password: this.password });
+  }
         }
-    }
 }
 </script>
