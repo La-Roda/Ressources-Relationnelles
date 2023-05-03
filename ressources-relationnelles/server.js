@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const dotenv = require('dotenv')
+dotenv.config();
 
 app.use(cors())
 app.get('/', (req, res) => {
@@ -42,11 +44,11 @@ app.listen(port, () => {
 const { Client } = require('pg');
 
 const client = new Client({
-  host: 'localhost',
-  port: 5432,
-  user: 'postgres',
-  password: 'mysecretpassword',
-  database: 'postgres'
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE
 });
 
 client.connect((err) => {

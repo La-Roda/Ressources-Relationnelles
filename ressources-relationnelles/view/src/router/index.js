@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
+import store from '../store/index.js'
 const routes = [
   {
     path: '/home',
@@ -25,5 +25,13 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+router.beforeEach((to, from, next) => {
+  const token = store.getters['getToken'];
+  if (to.name !== 'login' && token === null) {
+    next({ name: 'login' });
+  } else {
+    next();
+  }
+});
 
 export default router

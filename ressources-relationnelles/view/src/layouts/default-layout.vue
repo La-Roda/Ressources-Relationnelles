@@ -6,19 +6,24 @@
         <v-main>
             <router-view></router-view>
         </v-main>
-        <div>fdsfsdf</div>
     </v-app>
 </template>
-
+<style></style>
 <script>
 import headerComponent from '../components/header.vue';
-
 import { defineComponent } from "vue";
 
 export default defineComponent({
+    name: 'default-layout',
     components: {
         headerComponent
     },
-    name: 'logged-out',
+    created() {
+    },
+    data() {
+        return {
+            cookieAuth: null
+        }
+    },
 })
 </script>
