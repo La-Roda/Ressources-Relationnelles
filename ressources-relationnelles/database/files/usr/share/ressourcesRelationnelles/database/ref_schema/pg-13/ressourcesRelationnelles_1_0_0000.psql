@@ -75,8 +75,9 @@ ALTER SEQUENCE public.schemachangelog_id_seq OWNED BY public.schemachangelog.id;
 CREATE TABLE public.users (
     id integer NOT NULL,
     name character varying(64) NOT NULL,
-    addr character varying(255) NOT NULL,
-    eid character varying(255) NOT NULL
+    username character varying(64) NOT NULL,
+    email character varying(255) NOT NULL,
+    pwd character varying(255) NOT NULL
 );
 
 ALTER TABLE public.users OWNER TO postgres;
@@ -126,6 +127,12 @@ ALTER TABLE ONLY public.schemachangelog
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT pk_users PRIMARY KEY (id);
+
+--
+-- Name: TABLE schemachangelog; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.schemachangelog TO "www-data";
 
 --
 -- Name: TABLE changelog; Type: ACL; Schema: public; Owner: postgres
