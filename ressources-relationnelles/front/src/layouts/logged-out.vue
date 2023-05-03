@@ -6,7 +6,6 @@
         <v-main>
             <router-view></router-view>
         </v-main>
-        <div>fdsfsdf</div>
     </v-app>
 </template>
 

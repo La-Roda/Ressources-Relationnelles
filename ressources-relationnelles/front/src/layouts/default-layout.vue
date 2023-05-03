@@ -6,7 +6,6 @@
         <v-main>
             <router-view></router-view>
         </v-main>
-        <div>TESSSTTTTT</div>
     </v-app>
 </template>
 <style></style>

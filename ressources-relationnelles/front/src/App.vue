@@ -1,5 +1,5 @@
 <template>
-  <logged-out v-if="!cookieAuth"></logged-out>
+  <logged-out v-if="getToken === null"></logged-out>
   <defaultLayout v-else></defaultLayout>
 </template>
 <style>
@@ -8,6 +8,7 @@
 <script>
 import loggedOut from './layouts/logged-out.vue'
 import defaultLayout from './layouts/default-layout.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'App',
@@ -20,5 +21,8 @@ export default {
             cookieAuth: null
         }
   },
+  computed:{
+    ...mapGetters(['getToken'])
+  }
 }
 </script>
