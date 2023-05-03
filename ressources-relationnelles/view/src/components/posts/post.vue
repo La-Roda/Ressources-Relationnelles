@@ -14,6 +14,11 @@
         <v-card-text class="mt-3">
             {{post.content}}
         </v-card-text>
+        <v-btn
+        variant="text"
+        icon='mdi-heart-outline'
+        color="#009C9B"
+      ></v-btn>
     </v-card>
 </template>
 <style>
@@ -39,6 +44,11 @@ export default {
         post: {
             type: Object,
             required: true
+        }
+    },
+    data(){
+        return  {
+            isliked: false
         }
     }
 }
