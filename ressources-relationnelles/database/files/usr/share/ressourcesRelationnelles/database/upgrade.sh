@@ -1,7 +1,7 @@
 #!/bin/bash
 DIR=$(readlink -m $(dirname ${0}))
 source ${DIR}/lib_functions.sh;
-SUBDIR=ressources-rellationnelles
+SUBDIR=ressourcesRellationnelles
 DATABASE_NAME=${1:-${SUBDIR}}
 path=${DIR}
 pgd_version=$(pg_dump --version | awk '{print $3}')
