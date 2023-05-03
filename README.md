@@ -2,7 +2,7 @@
 Projet forum CESI
 
 
-### Synthaxe des noms de Branches
+### Syntaxe des noms de Branches
 ```
   feature/[nom du ticket]
 ```
@@ -13,7 +13,7 @@ Exemple :
 ```
 
 
-### Synthaxe des Commits
+### Syntaxe des Commits
 ```
   RR : [message du commit]
   
