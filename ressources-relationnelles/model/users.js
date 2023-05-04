@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 
-class User {
+class Users {
   constructor(id, firstName, lastName, username, email, password) {
     this.id = id;
     this.firstName = firstName;
@@ -20,7 +20,7 @@ class User {
   }
 
   toJSON() {
-    const { password, ...user } = this;
+    const { password, ...user} = this;
     return user;
   }
 }
