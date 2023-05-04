@@ -1,17 +1,51 @@
+
+const client = require('./connectionDatabase')
 const express = require('express');
-const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt');
-
 const app = express();
+const bodyParser = require('body-parser');
 
-// Configuration du middleware body-parser pour traiter les données POST
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
 // Tableau pour stocker les utilisateurs créés
 const users = [];
+module.exports = 
+    app.post('/login', async (req, res) => {
+        // Récupération des données envoyées dans la requête POST
+    
+        // Recherche de l'utilisateur correspondant à l'adresse email
+        const query = "SELECT * FROM public.users WHERE email = $1 AND pwd = $2;";
+        const params = [req.body.email, req.body.password];
+        const user = client.query(query, params, (err, res) => {
+          if (err) {
+            console.error('Failed to execute query:', err);
+          } else {
+            
+          }
+        });
 
-// Route pour s'inscrire
+    
+        if (user == []) {
+        return res.status(404).send('Utilisateur non trouvé.');
+        } else {
+            res.json({
+                message: 'Login successful',
+                token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
+              });
+        }
+
+        
+    
+        // Vérification du mot de passe
+        const isPasswordValid = await user.checkPassword(password);
+        if (!isPasswordValid) {
+        return res.status(401).send('Mot de passe incorrect.');
+        }
+    
+        // Réponse de la requête avec l'utilisateur connecté (sans le mot de passe)
+        res.json(user.toJSON());
+    });
+
+
+
 app.post('/register', async (req, res) => {
     // Récupération des données envoyées dans la requête POST
     const { firstName, lastName, username, email, password } = req.body;
@@ -37,23 +71,4 @@ app.post('/register', async (req, res) => {
 
 
 // Route pour se connecter
-app.post('/login', async (req, res) => {
-    // Récupération des données envoyées dans la requête POST
-    const { email, password } = req.body;
 
-    // Recherche de l'utilisateur correspondant à l'adresse email
-    const user = users.find(u => u.email === email);
-
-    if (!user) {
-	return res.status(404).send('Utilisateur non trouvé.');
-    }
-
-    // Vérification du mot de passe
-    const isPasswordValid = await user.checkPassword(password);
-    if (!isPasswordValid) {
-	return res.status(401).send('Mot de passe incorrect.');
-    }
-
-    // Réponse de la requête avec l'utilisateur connecté (sans le mot de passe)
-    res.json(user.toJSON());
-});

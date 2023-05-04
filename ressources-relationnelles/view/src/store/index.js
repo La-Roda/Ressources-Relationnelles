@@ -27,7 +27,7 @@ export default createStore({
   actions: {
     async login({ commit }, { email, password }) {
       try {
-        const response = await axios.post('http://localhost:3000/api/login', { email, password });
+        const response = await axios.post('http://localhost:3000/authentication/login', { email, password });
         const token = response.data.token;
         commit('setToken', token);
         router.push('/home')

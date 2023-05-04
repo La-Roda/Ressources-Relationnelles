@@ -1,5 +1,6 @@
 <template>
-    <v-container>
+    <v-container class="d-flex">
+    <div style="width: fit-content" class="ma-auto">
         <h1>Mon fil d'actualité</h1>
         <v-dialog max-width="50%" v-model="dialog">
             <template v-slot:activator="{ props }">
@@ -26,6 +27,7 @@
         <div v-for="post in getPosts" :key="post">
             <PostComponent :post="post"></PostComponent>
         </div>
+    </div>
     </v-container>
 </template>
 
