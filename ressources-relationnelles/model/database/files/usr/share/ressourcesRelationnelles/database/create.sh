@@ -6,7 +6,7 @@ DATABASE_NAME=${1:-${SUBDIR}}
 path=${DIR}
 pgd_version=$(pg_dump --version | awk '{print $3}')
 case $pgd_version in
- 	13\.[0-9])
+ 	1[3-4]\.[0-9][0-9])
  		ref_schema_path=ref_schema/pg-13
  	;;
  	*)
