@@ -1,0 +1,21 @@
+CREATE TABLE article (
+  id SERIAL NOT NULL,
+  id_users INTEGER NOT NULL,
+  title VARCHAR(64) NOT NULL,
+  field TEXT NOT NULL,
+  nb_likes INTEGER DEFAULT 0,
+  nb_dislike INTEGER DEFAULT 0,
+  nb_comment INTEGER DEFAULT 0,
+  post_date DATE NOT NULL,
+
+  CONSTRAINT pk_article PRIMARY KEY (id),
+  CONSTRAINT uk_article UNIQUE (id_users, title)
+);
+
+ALTER TABLE article
+  ADD CONSTRAINT fk_article_id_users
+  FOREIGN KEY (id_users)
+    REFERENCES users(id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+;

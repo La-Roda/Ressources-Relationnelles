@@ -3,3 +3,9 @@
 -- -----------------------------------------------------
 \echo '####### Creating table users....................'
 \ir tables/users.psql
+
+\echo '####### Creating table article....................'
+\ir tables/article.psql
+
+\echo '####### Creating table comment....................'
+\ir tables/comment.psql
