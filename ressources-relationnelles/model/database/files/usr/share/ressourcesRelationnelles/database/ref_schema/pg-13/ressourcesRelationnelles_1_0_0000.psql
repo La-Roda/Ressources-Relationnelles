@@ -21,6 +21,36 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: article; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.article (
+    id integer NOT NULL,
+    id_users integer NOT NULL,
+    title character varying(64) NOT NULL,
+    field text NOT NULL,
+    nb_likes integer DEFAULT 0,
+    nb_dislike integer DEFAULT 0,
+    nb_comment integer DEFAULT 0,
+    post_date date NOT NULL
+);
+ALTER TABLE public.article OWNER TO postgres;
+
+--
+-- Name: article_id_seq; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.article_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ALTER TABLE public.article_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.article_id_seq OWNED BY public.article.id;
+
+--
 -- Name: schemachangelog; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -53,6 +83,35 @@ CREATE VIEW public.changelog AS
   ORDER BY schemachangelog.id;
 ALTER TABLE public.changelog OWNER TO postgres;
 
+--
+-- Name: comment; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.comment (
+    id integer NOT NULL,
+    id_users integer NOT NULL,
+    id_article integer NOT NULL,
+    field text NOT NULL,
+    nb_likes integer DEFAULT 0,
+    nb_dislike integer DEFAULT 0,
+    post_date date NOT NULL
+);
+ALTER TABLE public.comment OWNER TO postgres;
+
+
+--
+-- Name: comment_id_seq; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.comment_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ALTER TABLE public.comment_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.comment_id_seq OWNED BY public.comment.id;
 
 --
 -- Name: schemachangelog_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -77,7 +136,9 @@ CREATE TABLE public.users (
     name character varying(64) NOT NULL,
     username character varying(64) NOT NULL,
     email character varying(255) NOT NULL,
-    pwd character varying(255) NOT NULL
+    pwd character varying(255) NOT NULL,
+    permissions_level integer DEFAULT 1,
+    birthday date NOT NULL
 );
 
 ALTER TABLE public.users OWNER TO postgres;
@@ -103,6 +164,18 @@ ALTER TABLE public.users_id_seq OWNER TO postgres;
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 --
+-- Name: article schemachangelog; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.article ALTER COLUMN id SET DEFAULT nextval('public.article_id_seq'::regclass);
+
+--
+-- Name: comment schemachangelog; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.comment ALTER COLUMN id SET DEFAULT nextval('public.comment_id_seq'::regclass);
+
+--
 -- Name: users schemachangelog; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -122,11 +195,72 @@ ALTER TABLE ONLY public.schemachangelog
     ADD CONSTRAINT idx_schemachangelog_id_primary PRIMARY KEY (id);
 
 --
+-- Name: article pk_article; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.article
+    ADD CONSTRAINT pk_article PRIMARY KEY (id);
+
+--
+-- Name: comment pk_comment; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.comment
+    ADD CONSTRAINT pk_comment PRIMARY KEY (id);
+
+--
 -- Name: users pk_users; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT pk_users PRIMARY KEY (id);
+
+--
+-- Name: article uk_article; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.article
+    ADD CONSTRAINT uk_article UNIQUE (id_users, title);
+
+--
+-- Name: users uk_users; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT uk_users UNIQUE (email);
+
+--
+-- Name: article fk_article_id_users; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.article
+    ADD CONSTRAINT fk_article_id_users FOREIGN KEY (id_users) REFERENCES public.users(id);
+
+--
+-- Name: comment fk_comment_id_article; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.comment
+    ADD CONSTRAINT fk_comment_id_article FOREIGN KEY (id_article) REFERENCES public.article(id);
+
+--
+-- Name: comment fk_comment_id_users; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.comment
+    ADD CONSTRAINT fk_comment_id_users FOREIGN KEY (id_users) REFERENCES public.users(id);
+
+--
+-- Name: TABLE article; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.article TO "www-data";
+
+--
+-- Name: TABLE article_id_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT ALL ON SEQUENCE public.article_id_seq TO "www-data";
 
 --
 -- Name: TABLE schemachangelog; Type: ACL; Schema: public; Owner: postgres
@@ -139,6 +273,18 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.schemachangelog TO "www-data";
 --
 
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.changelog TO "www-data";
+
+--
+-- Name: TABLE COMMENT; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.comment TO "www-data";
+
+--
+-- Name: TABLE COMMENT_id_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT ALL ON SEQUENCE public.comment_id_seq TO "www-data";
 
 --
 -- Name: TABLE schemachangelog_id_seq; Type: ACL; Schema: public; Owner: postgres

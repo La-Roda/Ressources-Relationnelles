@@ -6,13 +6,20 @@ DATABASE_NAME=${1:-${SUBDIR}}
 path=${DIR}
 pgd_version=$(pg_dump --version | awk '{print $3}')
 case $pgd_version in
- 	1[3-4]\.[0-9][0-9])
+ 	1[3-4]\.[0-9])
  		ref_schema_path=ref_schema/pg-13
  	;;
  	*)
- 		echo "ERROR: pg_dump unsupported Version (${pgd_version})" >&2;
- 		exit 1;
-	;;
+	    case $pgd_version in
+ 		1[3-4]\.[0-9][0-9])
+ 		    ref_schema_path=ref_schema/pg-13
+ 	        ;;
+ 		*)
+		    echo "ERROR: pg_dump unsupported Version (${pgd_version})" >&2;
+ 		    exit 1;
+	        ;;
+	    esac;
+        ;;
 esac;
 
 # INSERT INTO schemachangelog (major, minor, point, script_name, script_status, ts) VALUES (4, 0, 38, 'Initial install', 0, CURRENT_TIMESTAMP);
