@@ -12,8 +12,6 @@ dotenv.config();
 app.use(cors())
 app.use('/authentication', connectionController);
 
-
-
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });

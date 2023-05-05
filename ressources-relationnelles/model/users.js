@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
 
+module.exports = Users
+
 class Users {
     constructor(id, firstName, lastName, username, email, password, permissions_level, birthday, sex) {
 	this.id = id;
