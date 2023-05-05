@@ -9,3 +9,6 @@
 
 \echo '####### Creating table comment....................'
 \ir tables/comment.psql
+
+\echo '####### Creating table archives....................'
+\ir tables/archives.psql
