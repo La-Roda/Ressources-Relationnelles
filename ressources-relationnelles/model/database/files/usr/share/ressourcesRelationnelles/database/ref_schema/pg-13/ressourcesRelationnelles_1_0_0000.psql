@@ -30,8 +30,8 @@ CREATE TABLE public.article (
     title character varying(64) NOT NULL,
     field text NOT NULL,
     nb_likes integer DEFAULT 0,
-    nb_dislike integer DEFAULT 0,
-    nb_comment integer DEFAULT 0,
+    nb_dislikes integer DEFAULT 0,
+    nb_comments integer DEFAULT 0,
     post_date date NOT NULL
 );
 ALTER TABLE public.article OWNER TO postgres;
@@ -133,12 +133,14 @@ ALTER SEQUENCE public.schemachangelog_id_seq OWNED BY public.schemachangelog.id;
 
 CREATE TABLE public.users (
     id integer NOT NULL,
-    name character varying(64) NOT NULL,
+    firstname character varying(64) NOT NULL,
+    lastname character varying(64) NOT NULL,
     username character varying(64) NOT NULL,
     email character varying(255) NOT NULL,
-    pwd character varying(255) NOT NULL,
+    password character varying(255) NOT NULL,
     permissions_level integer DEFAULT 1,
-    birthday date NOT NULL
+    birthday date NOT NULL,
+    sex character varying(64) NOT NULL
 );
 
 ALTER TABLE public.users OWNER TO postgres;
