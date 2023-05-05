@@ -21,6 +21,38 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: archives; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.archives (
+    id integer NOT NULL,
+    id_users integer NOT NULL,
+    title character varying(64),
+    field text NOT NULL,
+     nb_likes integer DEFAULT 0,
+    nb_dislikes integer DEFAULT 0,
+    nb_comments integer,
+    id_article integer,
+    post_date date NOT NULL,
+    archiving_dare date NOT NULL
+);
+ALTER TABLE public.archives OWNER TO postgres;
+
+--
+-- Name: archives_id_seq; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.archives_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ALTER TABLE public.archives_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.archives_id_seq OWNED BY public.archives.id;
+
+--
 -- Name: article; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -166,6 +198,12 @@ ALTER TABLE public.users_id_seq OWNER TO postgres;
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 --
+-- Name: archives schemachangelog; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.archives ALTER COLUMN id SET DEFAULT nextval('public.archives_id_seq'::regclass);
+
+--
 -- Name: article schemachangelog; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -195,6 +233,13 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 ALTER TABLE ONLY public.schemachangelog
     ADD CONSTRAINT idx_schemachangelog_id_primary PRIMARY KEY (id);
+
+--
+-- Name: archives pk_archives; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.archives
+    ADD CONSTRAINT pk_archives PRIMARY KEY (id);
 
 --
 -- Name: article pk_article; Type: CONSTRAINT; Schema: public; Owner: postgres
@@ -232,6 +277,20 @@ ALTER TABLE ONLY public.users
     ADD CONSTRAINT uk_users UNIQUE (email);
 
 --
+-- Name: archives fk_archives_id_article; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.archives
+    ADD CONSTRAINT fk_archives_id_article FOREIGN KEY (id_article) REFERENCES public.article(id);
+
+--
+-- Name: archives fk_archives_id_users; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.archives
+    ADD CONSTRAINT fk_archives_id_users FOREIGN KEY (id_users) REFERENCES public.users(id);
+
+--
 -- Name: article fk_article_id_users; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -251,6 +310,18 @@ ALTER TABLE ONLY public.comment
 
 ALTER TABLE ONLY public.comment
     ADD CONSTRAINT fk_comment_id_users FOREIGN KEY (id_users) REFERENCES public.users(id);
+
+--
+-- Name: TABLE archives; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.archives TO "www-data";
+
+--
+-- Name: TABLE archives_id_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT ALL ON SEQUENCE public.archives_id_seq TO "www-data";
 
 --
 -- Name: TABLE article; Type: ACL; Schema: public; Owner: postgres

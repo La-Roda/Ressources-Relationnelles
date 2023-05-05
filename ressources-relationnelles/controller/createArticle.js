@@ -11,15 +11,11 @@ const articles = [];
 
 // Route pour créer un nouvel article
 app.post('/articles', (req, res) => {
-  // Récupération des données envoyées dans la requête POST
-  const { userId, title, content } = req.body;
+    // Récupération des données envoyées dans la requête POST
+    const { id_users, title, field } = req.body;
 
-  // Création d'un nouvel article
-  const newArticle = new Article(Date.now(), userId, title, content, new Date());
+    //TODO: Insert dans la table article
 
-  // Ajout de l'article au tableau
-  articles.push(newArticle);
-
-  // Réponse de la requête avec le nouvel article créé
-  res.json(newArticle);
+    // Réponse de la requête avec le nouvel article créé
+    res.json(newArticle);
 });
