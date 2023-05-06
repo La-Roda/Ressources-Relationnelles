@@ -5,9 +5,9 @@ const cors = require('cors');
 const client = require('./controller/connectionDatabase.js')
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv')
+const Users = require('./model/users.js')
 const connectionController = require('./controller/connectionController.js');
 dotenv.config();
-
 
 app.use(cors())
 app.use('/authentication', connectionController);
