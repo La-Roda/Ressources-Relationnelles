@@ -6,13 +6,20 @@ DATABASE_NAME=${1:-${SUBDIR}}
 path=${DIR}
 pgd_version=$(pg_dump --version | awk '{print $3}')
 case $pgd_version in
-	13\.[0-9])
-		ref_schema_path=ref_schema/pg-13
-	;;
-	*)
-		echo "ERROR: pg_dump unsupported Version (${pgd_version})" >&2;
-		exit 1;
-	;;
+ 	1[3-4]\.[0-9])
+ 		ref_schema_path=ref_schema/pg-13
+ 	;;
+ 	*)
+	    case $pgd_version in
+ 		1[3-4]\.[0-9][0-9])
+ 		    ref_schema_path=ref_schema/pg-13
+ 	        ;;
+ 		*)
+		    echo "ERROR: pg_dump unsupported Version (${pgd_version})" >&2;
+ 		    exit 1;
+	        ;;
+	    esac;
+        ;;
 esac;
 
 re_grant_database_access(){
