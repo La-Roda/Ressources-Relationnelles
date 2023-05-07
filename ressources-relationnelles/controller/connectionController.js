@@ -5,47 +5,34 @@ const bodyParser = require('body-parser');
 const Users = require('../model/users.js');
 
 app.use(bodyParser.json());
-// Tableau pour stocker les utilisateurs créés
-const users = [];
+
 module.exports = 
     app.post('/login', async (req, res) => {
-        // Récupération des données envoyées dans la requête POST
-
         // Recherche de l'utilisateur correspondant à l'adresse email
         const query = `SELECT * FROM users WHERE lower(email) = lower($1);`;
         const params = [req.body.email];
 
         client.query(query, params).then(result => {
-            console.log(result.rows[0]);
-            const user_obj = new Users(result.rows[0]);
+            const user_json = result.rows[0];
+            try{
+                // Essai d'encapsulation
+                const user_obj = new Users(user_json.id, user_json.firstname, user_json.lastname, user_json.username, user_json.email, user_json.password, user_json.permissions_level, user_json.birthday, user_json.sex);
 
-            // Vérification du mot de passe
-            const isPasswordValid = user_obj.checkPassword(req.body.password);
-            if (!isPasswordValid) {
+                // Vérification du mot de passe
+                const isPasswordValid = user_obj.checkPassword(req.body.password);
+                if (!isPasswordValid) {
+                    throw "incorrect_pass"
+                }
+                res.json(user_obj.toJSON());
+
+            }catch(e){
                 return res.status(401).send('Nom d\'utilisateur ou mot de passe incorrect.');
             }
-
-            res.json(user_obj.toJSON());
-
         }).catch(err => {
             console.error('Failed to execute query:', err);
         }).finally(() => {
             //
         });
-        
-        
-        /*
-        // Réponse de la requête avec l'utilisateur connecté (sans le mot de passe)
-        res.json(user.toJSON());
-        if (user == []) {
-        return res.status(404).send('Utilisateur non trouvé.');
-        } else {
-            res.json({
-                message: 'Login successful',
-                token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
-              });
-        }*/
-
     });
 
 

@@ -19,7 +19,7 @@ module.exports = class Users {
   }
 
   checkPassword(password) {
-    if(password === this.password){
+    if(password == this.password){
       return true;
     }else{
       return false;
