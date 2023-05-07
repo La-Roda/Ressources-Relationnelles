@@ -1,18 +1,10 @@
 <template>
-    <div class="header mx-4 d-flex justify-space-between ">
+    <div class="header mx-4 d-flex justify-center">
+    <div class="d-flex align-center fill-height" style="position: absolute; left:15px">
+        <v-btn absolute left icon="mdi-menu" @click="showDrawer"></v-btn>
+    </div>
         <div class="d-flex align-center">
             <v-img src="@/assets/logo_RR.png" fit :width="150" aspect-ratio="16/9"></v-img>
-        </div>
-        <div class="btn_header d-flex align-center">
-            <v-slide-x-reverse-transition>
-                <v-text-field class="outlined" width="300px" v-show="search" variant="solo" hide-details="auto">
-                </v-text-field>
-            </v-slide-x-reverse-transition>
-            <v-btn @click="search = !search" class="mx-1" icon="mdi-magnify"></v-btn>
-
-
-
-            <v-btn class="mx-1" icon="mdi-account-circle-outline"></v-btn>
         </div>
     </div>
 </template>
@@ -43,6 +35,11 @@ export default {
     data() {
         return {
             search: false
+        }
+    },
+    methods: {
+        showDrawer() {
+            this.$emit('showDrawer')
         }
     }
 }
