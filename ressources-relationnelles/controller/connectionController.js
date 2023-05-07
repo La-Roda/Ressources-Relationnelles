@@ -39,8 +39,9 @@ module.exports =
 
 app.post('/register', async (req, res) => {
     // Récupération des données envoyées dans la requête POST
-    const { firstName, lastName, username, email, password } = req.body;
-
+    const { firstname, lastname, username, email, password } = req.body;
+    console.log(req.body);
+/*
     // Vérification du format du mot de passe
     const passwordRegex = "/^(?=.*[A-Z].*[A-Z])(?=.*\d.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]/).{12,}$/";
     if (!passwordRegex.test(password)) {
@@ -57,7 +58,7 @@ app.post('/register', async (req, res) => {
     users.push(newUser);
 
     // Réponse de la requête avec le nouvel utilisateur créé (sans le mot de passe)
-    res.json(newUser.toJSON());
+    res.json(newUser.toJSON());*/
 });
 
 

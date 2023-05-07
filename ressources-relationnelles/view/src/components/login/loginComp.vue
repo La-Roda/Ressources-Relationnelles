@@ -72,12 +72,13 @@
           variant="outlined"
           v-model="sexe"
           label="Sexe"
+          name="sexe"
           :items="['Homme', 'Femme', 'Autre']"
         ></v-select>
         <div>
           <VueDatePicker v-model="date"></VueDatePicker>
         </div>
-        <v-btn color="#009C9B" class="rounded-pill mt-3" @click="initLogin"
+        <v-btn color="#009C9B" class="rounded-pill mt-3" @click="initRegister"
           >Se connecter</v-btn
         >
         <a @click="isLogin = true">Vous avez deja un compte ? Connectez vous !</a>
@@ -123,7 +124,7 @@ export default {
     },
     async initRegister() {
       // this.$emit('initLogin', this.login, this.password)
-      await this.$store.dispatch("login", { email: this.login, password: this.password });
+      await this.$store.dispatch("register", { lastname: this.nom, firstname: this.prenom, username: this.pseudo, email: this.email, password: this.registerPassword, sex: this.sexe, birthday: this.date});
       this.$store.dispatch("getPosts");
     },
   },

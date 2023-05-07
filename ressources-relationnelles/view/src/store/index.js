@@ -42,9 +42,9 @@ export default createStore({
         throw(error)
       }
     },
-    async register({ commit }, { nom, prenom, pseudo, email, password, sexe, date }) {
+    async register({ commit }, { lastname, firstname, username, email, password, sex, birthday }) {
       try {
-        const response = await axios.post('http://localhost:3000/authentication/register', { nom, prenom, pseudo, email, password, sexe, date });
+        const response = await axios.post('http://localhost:3000/authentication/register', { lastname, firstname, username, email, password, sex, birthday });
       } catch (error) {
         throw(error)
       }
