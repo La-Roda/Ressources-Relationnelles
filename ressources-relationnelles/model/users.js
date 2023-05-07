@@ -1,16 +1,16 @@
 const bcrypt = require('bcrypt');
 
-class Users {
-    constructor(id, firstName, lastName, username, email, password, permissions_level, birthday, sex) {
-	this.id = id;
-	this.firstname = firstname;
-	this.lastname = lastname;
-	this.username = username;
-	this.email = email;
-	this.password = password;
-	this.permissions_level = permisions_level;
-	this.birthday = birthday;
-	this.sex = sex;
+module.exports = class Users {
+    constructor(id, firstname, lastname, username, email, password, permissions_level, birthday, sex) {
+  	this.id = id;
+  	this.firstname = firstname;
+  	this.lastname = lastname;
+  	this.username = username;
+  	this.email = email;
+  	this.password = password;
+  	this.permissions_level = permissions_level;
+  	this.birthday = birthday;
+  	this.sex = sex;
   }
 
   static async hashPassword(password) {
@@ -18,8 +18,13 @@ class Users {
     return await bcrypt.hash(password, saltRounds);
   }
 
-  async checkPassword(password) {
-    return await bcrypt.compare(password, this.password);
+  checkPassword(password) {
+    if(password === this.password){
+      return true;
+    }else{
+      return false;
+    }
+    //return await bcrypt.compare(password, this.password);
   }
 
   toJSON() {
