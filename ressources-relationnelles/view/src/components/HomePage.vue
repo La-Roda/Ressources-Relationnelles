@@ -2,7 +2,7 @@
     <v-container class="d-flex">
     <div style="width: fit-content" class="ma-auto">
         <h1>Mon fil d'actualité</h1>
-        <v-dialog max-width="50%" v-model="dialog">
+        <v-dialog max-width="550px" width="90%" v-model="dialog">
             <template v-slot:activator="{ props }">
                 <v-container>
                     <v-btn v-bind="props" color="#009C9B" class="rounded-pill">Ajouter une nouvelle publication</v-btn>
@@ -25,7 +25,7 @@
             </v-card>
         </v-dialog>
         <div v-for="post in getPosts" :key="post">
-            <PostComponent :post="post"></PostComponent>
+            <PostComponent :post="post" :isMine="false"></PostComponent>
         </div>
     </div>
     </v-container>
