@@ -21,12 +21,15 @@ module.exports =
                 const user_obj = new Users(user_json.id, user_json.firstname, user_json.lastname, user_json.username, user_json.email, user_json.password, user_json.permissions_level, user_json.birthday, user_json.sex);
 
                 // Vérification du mot de passe
-                const isPasswordValid = user_obj.checkPassword(password);
-                if (!isPasswordValid) {
-                    throw "incorrect_pass"
-                }
-                res.json(user_obj.toJSON());
-
+                user_obj.checkPassword(password).then(verified => {
+                    if(verified){
+                        return res.json(user_obj.toJSON());
+                    }else{
+                        throw "incorrect_pass";
+                    }
+                }).catch(err => {
+                    return res.status(401).send('Nom d\'utilisateur ou mot de passe incorrect.');
+                });
             }catch(e){
                 return res.status(401).send('Nom d\'utilisateur ou mot de passe incorrect.');
             }

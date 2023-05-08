@@ -13,18 +13,13 @@ module.exports = class Users {
   	this.sex = sex;
   }
 
-  static hashPassword(password) {
+  static async hashPassword(password) {
     const saltRounds = 10;
-    return bcrypt.hash(password, saltRounds);
+    return await bcrypt.hash(password, saltRounds);
   }
 
-  checkPassword(password) {
-    if(password == this.password){
-      return true;
-    }else{
-      return false;
-    }
-    //return await bcrypt.compare(password, this.password);
+  async checkPassword(password) {
+    return await bcrypt.compare(password, this.password);
   }
 
   toJSON() {
