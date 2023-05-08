@@ -18,7 +18,7 @@
           label="Mot de passe"
           name="password"
         ></v-text-field>
-        <v-btn color="#009C9B" class="rounded-pill" @click="initLogin"
+        <v-btn color="#009C9B" class="rounded-pill login" @click="initLogin"
           >Se connecter</v-btn
         >
         <a @click="isLogin = false">Vous n'avez pas de compte ? Créez en un !</a>
@@ -78,8 +78,8 @@
         <div>
           <VueDatePicker v-model="date"></VueDatePicker>
         </div>
-        <v-btn color="#009C9B" class="rounded-pill mt-3" @click="initRegister"
-          >Se connecter</v-btn
+        <v-btn color="#009C9B" class="rounded-pill register mt-3" @click="initRegister"
+          >Créer un compte</v-btn
         >
         <a @click="isLogin = true">Vous avez deja un compte ? Connectez vous !</a>
       </div>
@@ -124,8 +124,15 @@ export default {
     },
     async initRegister() {
       // this.$emit('initLogin', this.login, this.password)
-      await this.$store.dispatch("register", { lastname: this.nom, firstname: this.prenom, username: this.pseudo, email: this.email, password: this.registerPassword, sex: this.sexe, birthday: this.date});
-      this.$store.dispatch("getPosts");
+      await this.$store.dispatch("register", {
+        lastname: this.nom,
+        firstname: this.prenom,
+        username: this.pseudo,
+        email: this.email,
+        password: this.registerPassword,
+        sex: this.sexe,
+        birthday: this.date,
+      });
     },
   },
 };
