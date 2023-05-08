@@ -9,7 +9,7 @@
         </div>
       </div>
     </v-card-title>
-    <v-card-text class="mt-3">
+    <v-card-text class="mt-3 post-text">
       {{ post.content }}
     </v-card-text>
     <v-btn variant="text" icon="mdi-heart-outline" color="#009C9B"></v-btn>

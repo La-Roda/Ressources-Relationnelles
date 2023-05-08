@@ -4,9 +4,13 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "jest": "^29.5.0",
     "pg": "^8.10.0"
   },
   "scripts": {
-  	"postinstall": "cd view && npm install"
+    "postinstall": "cd view && npm install"
+  },
+  "devDependencies": {
+    "supertest": "^6.3.3"
   }
 }
