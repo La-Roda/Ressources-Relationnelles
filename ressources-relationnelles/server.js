@@ -7,10 +7,13 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv')
 const Users = require('./model/users.js')
 const connectionController = require('./controller/connectionController.js');
+const postController = require('./controller/postController.js');
+
 dotenv.config();
 
 app.use(cors())
 app.use('/authentication', connectionController);
+app.use('/posts', postController);
 
 app.get('/', (req, res) => {
     res.send('Hello World!');

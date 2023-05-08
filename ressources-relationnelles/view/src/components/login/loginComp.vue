@@ -98,6 +98,8 @@
 <script>
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
+import axios from "axios";
+
 export default {
   components: {
     VueDatePicker,
@@ -124,7 +126,7 @@ export default {
     },
     async initRegister() {
       // this.$emit('initLogin', this.login, this.password)
-      await this.$store.dispatch("register", {
+      const register = await axios.post("http://localhost:3000/authentication/register", {
         lastname: this.nom,
         firstname: this.prenom,
         username: this.pseudo,
@@ -133,6 +135,9 @@ export default {
         sex: this.sexe,
         birthday: this.date,
       });
+      if (register.status === 200) {
+        this.isLogin = true;
+      }
     },
   },
 };

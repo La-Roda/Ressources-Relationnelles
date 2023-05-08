@@ -18,13 +18,8 @@ module.exports = class Users {
     return await bcrypt.hash(password, saltRounds);
   }
 
-  checkPassword(password) {
-    if(password == this.password){
-      return true;
-    }else{
-      return false;
-    }
-    //return await bcrypt.compare(password, this.password);
+  async checkPassword(password) {
+    return await bcrypt.compare(password, this.password);
   }
 
   toJSON() {
