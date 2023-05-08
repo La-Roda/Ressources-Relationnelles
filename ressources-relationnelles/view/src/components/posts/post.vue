@@ -9,8 +9,9 @@
         </div>
       </div>
     </v-card-title>
-    <v-card-text class="mt-3 post-text">
-      {{ post.content }}
+    <v-card-text class="mt-3 post-text d-flex flex-column">
+      <h2>{{ post.title }}</h2>
+      <span>{{ post.field }}</span>
     </v-card-text>
     <v-btn variant="text" icon="mdi-heart-outline" color="#009C9B"></v-btn>
 

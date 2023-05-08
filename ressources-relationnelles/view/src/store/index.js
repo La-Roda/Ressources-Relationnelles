@@ -14,7 +14,7 @@ export default createStore({
       return state.token;
     },
     getPosts(state) {
-      return state.posts;
+      return state.posts.data;
     },
     getMyPosts(state) {
       return state.myPosts;
@@ -50,6 +50,7 @@ export default createStore({
     },
     async getPosts({ commit }) {
      const posts = await axios.get('http://localhost:3000/posts/get');
+     console.log(posts)
       commit('setPosts', posts);
     },
     async getMyPosts({ commit }) {
