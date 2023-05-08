@@ -11,18 +11,23 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Tableau pour stocker les articles créés
 const articles = [];
 module.exports = 
-app.get('/get', (req, res) => {
-    
-});
+    app.get('/get', (req, res) => {
+        const select_query = "SELECT title, field, users.username FROM article INNER JOIN users ON article.id_users = users.id;";
+        client.query(select_query).then(select_result => {
+            res.json(select_result.rows);
+        }).catch(err => {
+            console.error('Failed to execute query:', err);
+            return res.status(401).send("Erreur côté serveur.")
+        })
+    });
     app.post('/create', (req, res) => {
         // Récupération des données envoyées dans la requête POST
         const { id_users, title, field } = req.body;
-        const insert_query = "INSERT INTO article(id, id_users, title, field, post_date) VALUES($1, $2, $3, $4, to_timestamp($5 / 1000.0)) RETURNING *";
-        const insert_params = ['1', req.body.id, req.body.title, req.body.description, Date.now()]
+        const insert_query = "INSERT INTO article(id_users, title, field, post_date) VALUES($1, $2, $3, to_timestamp($4 / 1000.0)) RETURNING *";
+        const insert_params = [req.body.id, req.body.title, req.body.description, Date.now()]
         //TODO: Insert dans la table article
         client.query(insert_query, insert_params).then(insert_result => {
-
-            res.json(console.log(insert_result));
+            res.json(console.log(insert_result.rows));
         }).catch(err => {
             console.error('Failed to execute query:', err);
             return res.status(401).send("Erreur côté serveur.")
