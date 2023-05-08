@@ -13,9 +13,9 @@ module.exports = class Users {
   	this.sex = sex;
   }
 
-  static async hashPassword(password) {
+  static hashPassword(password) {
     const saltRounds = 10;
-    return await bcrypt.hash(password, saltRounds);
+    return bcrypt.hash(password, saltRounds);
   }
 
   checkPassword(password) {
