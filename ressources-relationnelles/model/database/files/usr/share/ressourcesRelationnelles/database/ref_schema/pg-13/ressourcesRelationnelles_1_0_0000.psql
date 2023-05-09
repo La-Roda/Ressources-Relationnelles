@@ -27,12 +27,9 @@ SET default_table_access_method = heap;
 CREATE TABLE public.archives (
     id integer NOT NULL,
     id_users integer NOT NULL,
-    title character varying(64),
-    field text NOT NULL,
-     nb_likes integer DEFAULT 0,
-    nb_dislikes integer DEFAULT 0,
-    nb_comments integer,
     id_article integer,
+    title character varying(255),
+    field text NOT NULL,
     post_date date NOT NULL,
     archiving_dare date NOT NULL
 );
@@ -59,7 +56,7 @@ ALTER SEQUENCE public.archives_id_seq OWNED BY public.archives.id;
 CREATE TABLE public.article (
     id integer NOT NULL,
     id_users integer NOT NULL,
-    title character varying(64) NOT NULL,
+    title character varying(255) NOT NULL,
     field text NOT NULL,
     nb_likes integer DEFAULT 0,
     nb_dislikes integer DEFAULT 0,
@@ -125,7 +122,7 @@ CREATE TABLE public.comment (
     id_article integer NOT NULL,
     field text NOT NULL,
     nb_likes integer DEFAULT 0,
-    nb_dislike integer DEFAULT 0,
+    nb_dislikes integer DEFAULT 0,
     post_date date NOT NULL
 );
 ALTER TABLE public.comment OWNER TO postgres;
@@ -144,6 +141,33 @@ CREATE SEQUENCE public.comment_id_seq
     CACHE 1;
 ALTER TABLE public.comment_id_seq OWNER TO postgres;
 ALTER SEQUENCE public.comment_id_seq OWNED BY public.comment.id;
+
+--
+-- Name: likes; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.likes (
+    id integer NOT NULL,
+    id_users integer NOT NULL,
+    id_article integer NOT NULL,
+    like_date date NOT NULL,
+    likestype boolean NOT NULL
+);
+ALTER TABLE public.likes OWNER TO postgres;
+
+--
+-- Name: likes_id_seq; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.likes_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ALTER TABLE public.likes_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.likes_id_seq OWNED BY public.likes.id;
 
 --
 -- Name: schemachangelog_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -216,6 +240,12 @@ ALTER TABLE ONLY public.article ALTER COLUMN id SET DEFAULT nextval('public.arti
 ALTER TABLE ONLY public.comment ALTER COLUMN id SET DEFAULT nextval('public.comment_id_seq'::regclass);
 
 --
+-- Name: likes schemachangelog; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.likes ALTER COLUMN id SET DEFAULT nextval('public.likes_id_seq'::regclass);
+
+--
 -- Name: users schemachangelog; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -254,6 +284,13 @@ ALTER TABLE ONLY public.article
 
 ALTER TABLE ONLY public.comment
     ADD CONSTRAINT pk_comment PRIMARY KEY (id);
+
+--
+-- Name: comment pk_likes; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.likes
+    ADD CONSTRAINT pk_likes PRIMARY KEY (id);
 
 --
 -- Name: users pk_users; Type: CONSTRAINT; Schema: public; Owner: postgres
@@ -312,6 +349,20 @@ ALTER TABLE ONLY public.comment
     ADD CONSTRAINT fk_comment_id_users FOREIGN KEY (id_users) REFERENCES public.users(id);
 
 --
+-- Name: likes fk_likes_id_article; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.likes
+    ADD CONSTRAINT fk_likes_id_article FOREIGN KEY (id_article) REFERENCES public.article(id);
+
+--
+-- Name: likes fk_likes_id_users; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.likes
+    ADD CONSTRAINT fk_likes_id_users FOREIGN KEY (id_users) REFERENCES public.users(id);
+
+--
 -- Name: TABLE archives; Type: ACL; Schema: public; Owner: postgres
 --
 
@@ -348,16 +399,28 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.schemachangelog TO "www-data";
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.changelog TO "www-data";
 
 --
--- Name: TABLE COMMENT; Type: ACL; Schema: public; Owner: postgres
+-- Name: TABLE comment; Type: ACL; Schema: public; Owner: postgres
 --
 
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.comment TO "www-data";
 
 --
--- Name: TABLE COMMENT_id_seq; Type: ACL; Schema: public; Owner: postgres
+-- Name: TABLE comment_id_seq; Type: ACL; Schema: public; Owner: postgres
 --
 
 GRANT ALL ON SEQUENCE public.comment_id_seq TO "www-data";
+
+--
+-- Name: TABLE likes; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE public.likes TO "www-data";
+
+--
+-- Name: TABLE likes_id_seq; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT ALL ON SEQUENCE public.likes_id_seq TO "www-data";
 
 --
 -- Name: TABLE schemachangelog_id_seq; Type: ACL; Schema: public; Owner: postgres

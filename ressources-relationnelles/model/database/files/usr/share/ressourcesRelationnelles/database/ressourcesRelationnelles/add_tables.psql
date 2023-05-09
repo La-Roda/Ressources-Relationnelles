@@ -12,3 +12,6 @@
 
 \echo '####### Creating table archives....................'
 \ir tables/archives.psql
+
+\echo '####### Creating table likes....................'
+\ir tables/likes.psql

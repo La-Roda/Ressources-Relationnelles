@@ -1,0 +1,25 @@
+CREATE TABLE likes (
+  id SERIAL NOT NULL,
+  id_users INTEGER NOT NULL,
+  id_article INTEGER NOT NULL,
+  like_date DATE NOT NULL,
+  likesType BOOLEAN NOT NULL,
+
+  CONSTRAINT pk_likes PRIMARY KEY (id)
+);
+
+ALTER TABLE likes
+  ADD CONSTRAINT fk_likes_id_article
+  FOREIGN KEY (id_article)
+    REFERENCES article(id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+;
+
+ALTER TABLE likes
+  ADD CONSTRAINT fk_likes_id_users
+  FOREIGN KEY (id_users)
+    REFERENCES users(id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+;
