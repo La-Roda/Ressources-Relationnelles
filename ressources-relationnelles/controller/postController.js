@@ -35,25 +35,44 @@ module.exports =
         // Réponse de la requête avec le nouvel article créé
         //res.json(newArticle);
     });
-    app.delete('/delete', (req, res) => {
+    app.delete('/delete/:id', (req, res) => {
         // Récupération de l'ID de l'article à supprimer
         const id = parseInt(req.params.id);
-    
-        //TODO: INSERT dans la table archive
-        //DELETE sur la table cible (article OU comment)
-    
-        // Réponse de la requête avec un message de confirmation
-        res.send('Post supprimé avec succès.');
-    });
-    app.put('/update', (req, res) => {
+      
+        // TODO: INSERT dans la table archive
+        const archive_query = "INSERT INTO archive SELECT * FROM article WHERE id = $1";
+        client.query(archive_query, [id])
+          .then(() => {
+            // TODO: DELETE sur la table article
+            const delete_query = "DELETE FROM article WHERE id = $1";
+            return client.query(delete_query, [id]);
+          })
+          .then(() => {
+            res.send('Post supprimé avec succès.');
+          })
+          .catch(err => {
+            console.error('Failed to execute query:', err);
+            return res.status(401).send("Erreur côté serveur.")
+          });
+      });
+      app.put('/update/:id', (req, res) => {
         // Récupération de l'ID de l'article à modifier
         const id = parseInt(req.params.id);
-    
-        //TODO: UPDATE sur la table cible (article OU comment)
-    
-        // Réponse de la requête avec l'article mis à jour
-        res.json(article);
-    });
+        
+        const { title, field } = req.body;
+      
+        // TODO: UPDATE sur la table article
+        const update_query = "UPDATE article SET title = $1, field = $2 WHERE id = $3 RETURNING *";
+        const update_params = [title, field, id];
+        client.query(update_query, update_params)
+          .then(update_result => {
+            res.json(update_result.rows[0]);
+          })
+          .catch(err => {
+            console.error('Failed to execute query:', err);
+            return res.status(401).send("Erreur côté serveur.")
+          });
+      });
         
 
 // Route pour créer un nouvel article
