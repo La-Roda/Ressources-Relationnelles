@@ -307,6 +307,13 @@ ALTER TABLE ONLY public.article
     ADD CONSTRAINT uk_article UNIQUE (id_users, title);
 
 --
+-- Name: article uk_links; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.likes
+    ADD CONSTRAINT uk_likes UNIQUE (id_users, id_article);
+
+--
 -- Name: users uk_users; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 

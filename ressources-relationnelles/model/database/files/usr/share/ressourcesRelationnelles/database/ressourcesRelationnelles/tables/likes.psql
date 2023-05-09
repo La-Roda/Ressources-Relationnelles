@@ -5,7 +5,8 @@ CREATE TABLE likes (
   like_date DATE NOT NULL,
   likesType BOOLEAN NOT NULL,
 
-  CONSTRAINT pk_likes PRIMARY KEY (id)
+  CONSTRAINT pk_likes PRIMARY KEY (id),
+  CONSTRAINT uk_likes UNIQUE (id_users, id_article)
 );
 
 ALTER TABLE likes
