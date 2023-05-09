@@ -1,7 +1,7 @@
 CREATE TABLE article (
   id SERIAL NOT NULL,
   id_users INTEGER NOT NULL,
-  title VARCHAR(64) NOT NULL,
+  title VARCHAR(255) NOT NULL,
   field TEXT NOT NULL,
   nb_likes INTEGER DEFAULT 0,
   nb_dislikes INTEGER DEFAULT 0,

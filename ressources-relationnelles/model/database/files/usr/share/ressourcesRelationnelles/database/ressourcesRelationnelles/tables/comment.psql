@@ -4,7 +4,7 @@ CREATE TABLE comment (
   id_article INTEGER NOT NULL,
   field TEXT NOT NULL,
   nb_likes INTEGER DEFAULT 0,
-  nb_dislike INTEGER DEFAULT 0,
+  nb_dislikes INTEGER DEFAULT 0,
   post_date DATE NOT NULL,
 
   CONSTRAINT pk_comment PRIMARY KEY (id)
