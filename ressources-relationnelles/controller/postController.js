@@ -20,6 +20,18 @@ module.exports =
             return res.status(401).send("Erreur côté serveur.")
         })
     });
+    app.get('/myposts/', (req, res) => {
+      const {id_user} = req.query
+      console.log(id_user)
+      const select_query = "SELECT article.id, title, field, users.username FROM article INNER JOIN users ON article.id_users = users.id WHERE id_users = $1;";
+      const params = [id_user]
+      client.query(select_query, params).then(select_result => {
+          res.json(select_result.rows);
+      }).catch(err => {
+          console.error('Failed to execute query:', err);
+          return res.status(401).send("Erreur côté serveur.")
+      })
+  });
     app.post('/create', (req, res) => {
         // Récupération des données envoyées dans la requête POST
         const { id_users, title, field } = req.body;
@@ -35,17 +47,20 @@ module.exports =
         // Réponse de la requête avec le nouvel article créé
         //res.json(newArticle);
     });
-    app.delete('/delete/:id', (req, res) => {
+    app.post('/delete/', (req, res) => {
         // Récupération de l'ID de l'article à supprimer
-        const id = parseInt(req.params.id);
-      
+  
+        const { id_post } = req.body;
+  
         // TODO: INSERT dans la table archive
-        const archive_query = "INSERT INTO archive SELECT * FROM article WHERE id = $1";
-        client.query(archive_query, [id])
+        const archive_query = "INSERT INTO archives SELECT * FROM article WHERE id = $1";
+        const delete_query = "DELETE FROM article WHERE id = $1";
+
+        client.query(delete_query, [id_post])
           .then(() => {
             // TODO: DELETE sur la table article
-            const delete_query = "DELETE FROM article WHERE id = $1";
-            return client.query(delete_query, [id]);
+            // const delete_query = "DELETE FROM article WHERE id = $1";
+            // return client.query(delete_query, [id_post]);
           })
           .then(() => {
             res.send('Post supprimé avec succès.');
@@ -55,15 +70,14 @@ module.exports =
             return res.status(401).send("Erreur côté serveur.")
           });
       });
-      app.put('/update/:id', (req, res) => {
+      app.put('/update/', (req, res) => {
         // Récupération de l'ID de l'article à modifier
-        const id = parseInt(req.params.id);
         
-        const { title, field } = req.body;
+        const { id_user, id_post, title, field } = req.body;
       
         // TODO: UPDATE sur la table article
-        const update_query = "UPDATE article SET title = $1, field = $2 WHERE id = $3 RETURNING *";
-        const update_params = [title, field, id];
+        const update_query = "UPDATE article SET id_users=$1 , title = $2, field = $3 WHERE id = $4 RETURNING *";
+        const update_params = [id_user, title, field, id_post];
         client.query(update_query, update_params)
           .then(update_result => {
             res.json(update_result.rows[0]);

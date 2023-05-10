@@ -17,7 +17,7 @@ export default createStore({
       return state.posts.data;
     },
     getMyPosts(state) {
-      return state.myPosts;
+      return state.myPosts.data;
     },
     getUser(state) {
       return state.user;
@@ -50,20 +50,12 @@ export default createStore({
     },
     async getPosts({ commit }) {
      const posts = await axios.get('http://localhost:3000/posts/get');
-     console.log(posts)
       commit('setPosts', posts);
     },
     async getMyPosts({ commit }) {
-      const posts = [
-         {    "username": "Chris",    "title": "My first post",    "content": "Hello everyone, this is my first post on this social network!"  },
-         {    "username": "Adrien",    "title": "A beautiful day",    "content": "Today is such a beautiful day! I'm going for a walk in the park."  }, 
-          {    "username": "Theo",    "title": "New job",    "content": "I'm so excited to start my new job next week! Wish me luck."  }, 
-           {    "username": "Alexis",    "title": "My favorite book",    "content": "I just finished reading 'To Kill a Mockingbird' and it's now my favorite book ever!"  },
-             {    "username": "Bob",    "title": "Favorite movie",    "content": "I watched 'The Godfather' last night and it's definitely my favorite movie of all time."  }, 
-              {    "username": "Charlie",    "title": "Travel plans",    "content": "I'm planning a trip to Europe next year. Any recommendations?"  }
-             ]
-      
-             commit('setMyPosts', posts);
+      console.log(this.state.user.id)
+      const posts = await axios.get('http://localhost:3000/posts/myposts', { params: {id_user: this.state.user.id}  });
+      commit('setMyPosts', posts);
      }
     // async getUser({commit, state}) {
     //   const user = await this.$httpBuilder()

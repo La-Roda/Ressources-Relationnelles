@@ -10,10 +10,15 @@
       </div>
     </v-card-title>
     <v-card-text class="mt-3 post-text d-flex flex-column">
-      <h2>{{ post.title }}</h2>
-      <span>{{ post.field }}</span>
+      <h2>{{ title }}</h2>
+      <span>{{ description }}</span>
     </v-card-text>
-    <v-btn variant="text" icon="mdi-heart-outline" color="#009C9B"></v-btn>
+    <v-btn
+      variant="text"
+      icon="mdi-heart-outline"
+      color="#009C9B"
+      @click="initLike"
+    ></v-btn>
 
     <v-dialog v-if="isMine" max-width="550px" width="90%" v-model="dialogEdit">
       <template v-slot:activator="{ props }">
@@ -48,7 +53,7 @@
           <v-btn color="#009C9B" class="rounded-pill" @click="dialogEdit = false"
             >Annuler</v-btn
           >
-          <v-btn color="#009C9B" class="rounded-pill" @click="test()">Valider</v-btn>
+          <v-btn color="#009C9B" class="rounded-pill" @click="editPost()">Valider</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -66,7 +71,7 @@
           <v-btn color="#009C9B" class="rounded-pill" @click="dialogDelete = false"
             >Non</v-btn
           >
-          <v-btn color="#009C9B" class="rounded-pill" @click="test()">Oui</v-btn>
+          <v-btn color="#009C9B" class="rounded-pill" @click="deletePost()">Oui</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -80,6 +85,7 @@
 <style scoped>
 .post {
   max-width: 750px;
+  width: 100%;
   background-color: #efefef;
 }
 
@@ -89,6 +95,8 @@
 }
 </style>
 <script>
+import axios from "axios";
+import { mapGetters } from "vuex";
 export default {
   name: "PostComponent",
   props: {
@@ -104,6 +112,8 @@ export default {
   data() {
     return {
       isliked: false,
+      title: this.post.title,
+      description: this.post.field,
       dialogEdit: false,
       dialogDelete: false,
       edittedPostTitle: this.post.title,
@@ -115,9 +125,33 @@ export default {
       console.log(val);
     },
   },
+  computed: {
+    ...mapGetters(["getUser"]),
+  },
   methods: {
-    test() {
-      console.log(this.edittedPost);
+    async editPost() {
+      await axios.put("http://localhost:3000/posts/update", {
+        id_user: this.getUser.id,
+        id_post: this.post.id,
+        title: this.edittedPostTitle,
+        field: this.edittedPostContent,
+      });
+      // (this.title = this.edittedPostTitle),
+      // (this.description = this.edittedPostContent),
+      // (this.dialogEdit = false)
+      this.$store.dispatch("getMyPosts");
+    },
+    async deletePost() {
+      await axios.post("http://localhost:3000/posts/delete", {
+        id_post: this.post.id,
+      });
+      this.$store.dispatch("getMyPosts");
+    },
+    async initLike() {
+      await axios.post("http://localhost:3000/posts/like", {
+        id_post: this.post.id,
+        id_user: this.getUser.id,
+      });
     },
   },
 };

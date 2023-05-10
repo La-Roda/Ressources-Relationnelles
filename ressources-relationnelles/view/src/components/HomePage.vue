@@ -40,8 +40,11 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <div v-for="post in getPosts" :key="post">
+      <div v-if="getPosts.length !== 0" v-for="post in getPosts" :key="post">
         <PostComponent :post="post" :isMine="false"></PostComponent>
+      </div>
+      <div v-else class="text-center">
+        <span>Il n'y a aucune publication à vous montrer</span>
       </div>
     </div>
   </v-container>
@@ -78,6 +81,8 @@ export default {
         title: this.postTitle,
         description: this.description,
       });
+      this.dialog = false;
+      this.$store.dispatch("getPosts");
     },
   },
 };
