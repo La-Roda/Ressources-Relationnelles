@@ -7,7 +7,8 @@ export default createStore({
     token: null,
     user: {},
     posts:{},
-    myPosts: {}
+    myPosts: {},
+    likes: {}
   },
   getters: {
     getToken(state){
@@ -15,6 +16,9 @@ export default createStore({
     },
     getPosts(state) {
       return state.posts.data;
+    },
+    getLikes(state) {
+      return state.likes
     },
     getMyPosts(state) {
       return state.myPosts.data;
@@ -29,6 +33,9 @@ export default createStore({
     },
     setPosts(state, posts) {
       state.posts = posts;
+    },
+    setLikes(state, likes) {
+      state.likes = likes
     },
     setMyPosts(state, posts) {
       state.myPosts = posts;
@@ -53,9 +60,14 @@ export default createStore({
       commit('setPosts', posts);
     },
     async getMyPosts({ commit }) {
-      console.log(this.state.user.id)
+
       const posts = await axios.get('http://localhost:3000/posts/myposts', { params: {id_user: this.state.user.id}  });
       commit('setMyPosts', posts);
+     },
+     async getLikes({ commit }) {
+      
+      const posts = await axios.get('http://localhost:3000/posts/getlikes', { params: {id_user: this.state.user.id}  });
+      commit('setLikes', posts);
      }
     // async getUser({commit, state}) {
     //   const user = await this.$httpBuilder()

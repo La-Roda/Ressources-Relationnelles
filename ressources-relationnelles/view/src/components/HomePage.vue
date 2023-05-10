@@ -1,16 +1,22 @@
 <template>
-  <v-container class="d-flex">
-    <div style="width: fit-content" class="ma-auto">
+  <div class="d-flex justify-center ma-3 mt-5">
+    <div style="max-width: 550px; width: 100%">
       <h1>Mon fil d'actualité</h1>
-      <v-dialog max-width="550px" width="90%" v-model="dialog">
+      <v-divider class="mt-2"></v-divider>
+      <v-dialog class="d-flex justify-center" width="100%" v-model="dialog">
         <template v-slot:activator="{ props }">
-          <v-container>
-            <v-btn v-bind="props" color="#009C9B" class="rounded-pill"
-              >Ajouter une nouvelle publication</v-btn
-            >
-          </v-container>
+          <v-btn
+            v-bind="props"
+            color="#009C9B"
+            variant="tonal"
+            prepend-icon="mdi-note"
+            class="rounded-lg my-5"
+            width="100%"
+            height="60px"
+            >Nouvelle publication</v-btn
+          >
         </template>
-        <v-card>
+        <v-card max-width="550px" width="100%" class="ma-auto">
           <v-card-text>
             <v-container>
               <h2>Publier un nouveau post</h2>
@@ -40,6 +46,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <v-divider class="mb-5"></v-divider>
       <div v-if="getPosts.length !== 0" v-for="post in getPosts" :key="post">
         <PostComponent :post="post" :isMine="false"></PostComponent>
       </div>
@@ -47,7 +54,7 @@
         <span>Il n'y a aucune publication à vous montrer</span>
       </div>
     </div>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -73,6 +80,9 @@ export default {
   },
   computed: {
     ...mapGetters(["getPosts", "getUser"]),
+  },
+  created() {
+    this.$store.dispatch("getPosts");
   },
   methods: {
     async initSendPost() {

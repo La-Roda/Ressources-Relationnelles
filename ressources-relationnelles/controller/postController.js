@@ -122,6 +122,21 @@ app.post('/like', (req, res) => {
             return res.status(401).send("Erreur côté serveur.")
         });
 });
+app.post('/dislike', (req, res) => {
+    const { id_post, id_user } = req.body;
+
+    const insert_query = "DELETE FROM likes WHERE id_users = $1 AND id_article = $2";
+    const insert_params = [id_user, id_post]
+
+    client.query(insert_query, insert_params)
+        .then(insert_result => {
+            res.json(insert_result.rows[0]);
+        })
+        .catch(err => {
+            console.error('Failed to execute query:', err);
+            return res.status(401).send("Erreur côté serveur.")
+        });
+});
 
 
 // Route pour créer un nouvel article

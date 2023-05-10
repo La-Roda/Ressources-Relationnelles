@@ -1,12 +1,13 @@
 <template>
   <v-container class="d-flex justify-center">
     <div style="max-width: 550px; width: 100%">
-      <h1>Mon fil d'actualité</h1>
+      <h1>Mes publications</h1>
+      <v-divider class="mt-3"></v-divider>
       <div v-if="getMyPosts.length !== 0" v-for="post in getMyPosts" :key="post">
         <PostComponent :post="post" :isMine="true"></PostComponent>
       </div>
-      <div v-else class="text-center">
-        <span>Il n'y a aucune publication à vous montrer</span>
+      <div v-else class="text-center mt-3">
+        <span>Vous n'avez encore rien publié !</span>
       </div>
     </div>
   </v-container>

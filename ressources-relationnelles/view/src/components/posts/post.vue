@@ -1,5 +1,5 @@
 <template>
-  <v-card class="post mx-4 ma-2">
+  <v-card class="post my-4 rounded-lg">
     <v-card-title class="pb-0">
       <div class="d-inline-flex">
         <v-img src="@/assets/profil.png" width="30px"></v-img>
@@ -15,9 +15,17 @@
     </v-card-text>
     <v-btn
       variant="text"
+      icon="mdi-heart"
+      color="#009C9B"
+      @click="initDislike"
+      v-if="isLiked"
+    ></v-btn>
+    <v-btn
+      variant="text"
       icon="mdi-heart-outline"
       color="#009C9B"
       @click="initLike"
+      v-else
     ></v-btn>
 
     <v-dialog v-if="isMine" max-width="550px" width="90%" v-model="dialogEdit">
@@ -59,12 +67,18 @@
     </v-dialog>
     <v-dialog v-if="isMine" max-width="550px" width="90%" v-model="dialogDelete">
       <template v-slot:activator="{ props }">
-        <v-btn variant="text" icon="mdi-close" color="#009C9B" v-bind="props"></v-btn>
+        <v-btn
+          class="delete_button"
+          variant="text"
+          icon="mdi-close"
+          color="#009C9B"
+          v-bind="props"
+        ></v-btn>
       </template>
       <v-card>
         <v-card-text>
           <v-container>
-            <h2>Etes vous sur de vouloir supprimer votre post ?</h2>
+            <h2 class="text-center">Etes vous sur de vouloir supprimer votre post ?</h2>
           </v-container>
         </v-card-text>
         <v-card-actions class="d-flex justify-space-around">
@@ -86,12 +100,16 @@
 .post {
   max-width: 750px;
   width: 100%;
-  background-color: #efefef;
 }
 
 .infos_user .date {
   font-size: 12px;
   color: grey;
+}
+.delete_button {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 </style>
 <script>
@@ -111,13 +129,13 @@ export default {
   },
   data() {
     return {
-      isliked: false,
+      isliked: this.isLiked,
       title: this.post.title,
       description: this.post.field,
       dialogEdit: false,
       dialogDelete: false,
       edittedPostTitle: this.post.title,
-      edittedPostContent: this.post.content,
+      edittedPostContent: this.post.field,
     };
   },
   watch: {
@@ -126,7 +144,15 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["getUser"]),
+    ...mapGetters(["getUser", "getLikes"]),
+    isLiked() {
+      for (const val of this.getLikes.data) {
+        if (val.id === this.post.id) {
+          return true;
+        }
+      }
+      return false;
+    },
   },
   methods: {
     async editPost() {
@@ -152,6 +178,14 @@ export default {
         id_post: this.post.id,
         id_user: this.getUser.id,
       });
+      this.$store.dispatch("getLikes");
+    },
+    async initDislike() {
+      await axios.post("http://localhost:3000/posts/dislike", {
+        id_post: this.post.id,
+        id_user: this.getUser.id,
+      });
+      this.$store.dispatch("getLikes");
     },
   },
 };

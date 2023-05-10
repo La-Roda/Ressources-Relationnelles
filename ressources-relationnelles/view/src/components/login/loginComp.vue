@@ -21,7 +21,9 @@
         <v-btn color="#009C9B" class="rounded-pill login" @click="initLogin"
           >Se connecter</v-btn
         >
-        <a @click="isLogin = false">Vous n'avez pas de compte ? Créez en un !</a>
+        <span class="mt-3 text-center"
+          >Vous n'avez pas de compte ? <a @click="isLogin = false">Créez en un !</a></span
+        >
       </div>
     </v-card>
   </v-container>
@@ -81,7 +83,10 @@
         <v-btn color="#009C9B" class="rounded-pill register mt-3" @click="initRegister"
           >Créer un compte</v-btn
         >
-        <a @click="isLogin = true">Vous avez deja un compte ? Connectez vous !</a>
+        <span class="mt-3 text-center"
+          >Vous avez déjà un compte ?
+          <a @click="isLogin = true">Connectez-vous !</a></span
+        >
       </div>
     </v-card>
   </v-container>
@@ -92,7 +97,11 @@
   max-width: 500px;
   overflow-y: visible;
 }
-.text-input {
+a {
+  color: #009c9b;
+}
+a:hover {
+  cursor: pointer;
 }
 </style>
 <script>
@@ -123,6 +132,7 @@ export default {
       // this.$emit('initLogin', this.login, this.password)
       await this.$store.dispatch("login", { email: this.login, password: this.password });
       this.$store.dispatch("getPosts");
+      this.$store.dispatch("getLikes");
     },
     async initRegister() {
       // this.$emit('initLogin', this.login, this.password)
