@@ -12,18 +12,18 @@
             <h2 class="ml-4">Vos informations :</h2>
             <div class="mt-5 ml-5">
                 <v-row>
-                    <v-col cols="3"><b>Nom :</b> </v-col>
-                    <v-divider vertical></v-divider>
+                    <v-col cols="4"><b>Nom :</b> </v-col>
+                   
                     <v-col>{{ getUser.lastname }}</v-col>
                 </v-row>
                 <v-row>
-                    <v-col cols="3"><b>Prénom :</b> </v-col>
-                    <v-divider vertical></v-divider>
+                    <v-col cols="4"><b>Prénom :</b> </v-col>
+                  
                     <v-col>{{ getUser.firstname }}</v-col>
                 </v-row>
                 <v-row>
-                    <v-col cols="3"><b>E-mail :</b> </v-col>
-                    <v-divider vertical></v-divider>
+                    <v-col cols="4"><b>E-mail :</b> </v-col>
+                    
                     <v-col>{{ getUser.email }}</v-col>
                 </v-row>
         </div>

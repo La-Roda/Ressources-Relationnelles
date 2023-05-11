@@ -125,7 +125,10 @@ app.post("/register", async (req, res) => {
             });
         });
       } else {
-        logger.Applog("W: register failed: ", err);
+        logger.Applog(
+          "W: register failed: ",
+          "Un compte utilisant cette adresse existe déjà."
+        );
         return res
           .status(401)
           .send("Un compte utilisant cette adresse existe déjà.");

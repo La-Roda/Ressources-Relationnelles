@@ -3,13 +3,15 @@
     <v-card>
       <div class="pa-3 d-flex flex-column">
         <h2 class="mb-3">Se connecter</h2>
-        <v-divider width="100%" class="mb-3"></v-divider>
+        <v-divider width="100%"></v-divider>
         <v-text-field
           v-model="login"
           variant="outlined"
           class="text-input"
           label="Login"
+          hide-details="true"
           name="login"
+          clearable
         ></v-text-field>
         <v-text-field
           v-model="password"
@@ -17,13 +19,14 @@
           type="password"
           class="text-input"
           label="Mot de passe"
-          
+          hide-details="true"
+          clearable
           name="password"
         ></v-text-field>
         <v-btn
             color="#009C9B"
             variant="tonal"
-            class="rounded-lg"
+            class="rounded-lg mt-4"
             width="100%"
             height="40px"
             @click="initLogin"
@@ -47,60 +50,83 @@
     <v-card>
       <div class="pa-3 d-flex flex-column">
         <h2 class="mb-3">Créer un compte</h2>
-        <v-divider width="100%" class="mb-3"></v-divider>
+        <v-divider width="100%"></v-divider>
         <v-text-field
           v-model="nom"
+          density="compact"
+          hide-details="true"
           variant="outlined"
           class="text-input"
           label="Nom"
           name="nom"
+          clearable
         ></v-text-field>
         <v-text-field
           v-model="prenom"
+          density="compact"
+          hide-details="true"
           variant="outlined"
           type="text"
           class="text-input"
           label="Prénom"
           name="prenom"
+          clearable
         ></v-text-field>
         <v-text-field
           v-model="pseudo"
+          density="compact"
+          hide-details="true"
           variant="outlined"
           type="text"
           class="text-input"
           label="Pseudo"
           name="pseudo"
+          clearable
         ></v-text-field>
         <v-text-field
           v-model="email"
+          density="compact"
+          hide-details="true"
           variant="outlined"
           type="email"
           class="text-input"
           label="Email"
           name="email"
+          clearable
         ></v-text-field>
         <v-text-field
           v-model="registerPassword"
+          density="compact"
+          hide-details="true"
           variant="outlined"
           type="password"
           class="text-input"
           label="Mot de passe"
           name="registerPassword"
+          clearable
         ></v-text-field>
         <v-select
           variant="outlined"
+          density="compact"
+          class="text-input"
+          hide-details="true"
           v-model="sexe"
           label="Sexe"
           name="sexe"
           :items="['Homme', 'Femme', 'Autre']"
+          
         ></v-select>
         <div>
-          <VueDatePicker v-model="date"></VueDatePicker>
+          <VueDatePicker class="text-input date-picker" v-model="date" :enable-time-picker="false">
+            <template #input-icon>
+              <v-icon class="ml-2">mdi-calendar</v-icon>
+            </template>
+          </VueDatePicker>
         </div>
         <v-btn
             color="#009C9B"
             variant="tonal"
-            class="rounded-lg mt-2"
+            class="rounded-lg mt-1"
             width="100%"
             height="40px"
             @click="initRegister"
@@ -130,6 +156,12 @@
 }
 .v-snackbar__content{
   text-align: center !important;
+}
+.text-input{
+  margin-top: 15px;
+}
+.date-picker {
+  height: 50px !important;
 }
 a {
   color: #009c9b;

@@ -138,11 +138,6 @@ export default {
       edittedPostContent: this.post.field,
     };
   },
-  watch: {
-    edittedPost(val) {
-      console.log(val);
-    },
-  },
   computed: {
     ...mapGetters(["getUser", "getLikes"]),
     isLiked() {
