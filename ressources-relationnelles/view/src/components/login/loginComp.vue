@@ -3,6 +3,7 @@
     <v-card>
       <div class="pa-3 d-flex flex-column">
         <h2 class="mb-3">Se connecter</h2>
+        <v-divider width="100%" class="mb-3"></v-divider>
         <v-text-field
           v-model="login"
           variant="outlined"
@@ -16,21 +17,37 @@
           type="password"
           class="text-input"
           label="Mot de passe"
+          
           name="password"
         ></v-text-field>
-        <v-btn color="#009C9B" class="rounded-pill login" @click="initLogin"
-          >Se connecter</v-btn
-        >
+        <v-btn
+            color="#009C9B"
+            variant="tonal"
+            class="rounded-lg"
+            width="100%"
+            height="40px"
+            @click="initLogin"
+            >Se connecter</v-btn
+          >
         <span class="mt-3 text-center"
           >Vous n'avez pas de compte ? <a @click="isLogin = false">Créez en un !</a></span
         >
       </div>
     </v-card>
+    <v-snackbar
+      v-model="showSnackbar"
+      :timeout="2000"
+      :color="snackbarColor"
+      content-class="snackbar"
+    >
+    {{ snackbarMessage }}
+  </v-snackbar>
   </v-container>
   <v-container v-else class="login-card">
     <v-card>
       <div class="pa-3 d-flex flex-column">
         <h2 class="mb-3">Créer un compte</h2>
+        <v-divider width="100%" class="mb-3"></v-divider>
         <v-text-field
           v-model="nom"
           variant="outlined"
@@ -80,15 +97,29 @@
         <div>
           <VueDatePicker v-model="date"></VueDatePicker>
         </div>
-        <v-btn color="#009C9B" class="rounded-pill register mt-3" @click="initRegister"
-          >Créer un compte</v-btn
-        >
+        <v-btn
+            color="#009C9B"
+            variant="tonal"
+            class="rounded-lg mt-2"
+            width="100%"
+            height="40px"
+            @click="initRegister"
+            >Créer un compte</v-btn
+          >
         <span class="mt-3 text-center"
           >Vous avez déjà un compte ?
           <a @click="isLogin = true">Connectez-vous !</a></span
         >
       </div>
     </v-card>
+    <v-snackbar
+      v-model="showSnackbar"
+      :timeout="2000"
+      :color="snackbarColor"
+      content-class="snackbar"
+    >
+    {{ snackbarMessage }}
+  </v-snackbar>
   </v-container>
 </template>
 
@@ -96,6 +127,9 @@
 .login-card {
   max-width: 500px;
   overflow-y: visible;
+}
+.v-snackbar__content{
+  text-align: center !important;
 }
 a {
   color: #009c9b;
@@ -125,6 +159,9 @@ export default {
       email: null,
       registerPassword: null,
       sexe: null,
+      snackbarMessage: null,
+      showSnackbar: false,
+      snackbarColor: null
     };
   },
   methods: {
@@ -144,9 +181,17 @@ export default {
         password: this.registerPassword,
         sex: this.sexe,
         birthday: this.date,
-      });
+      }).then()
+      .catch((e) => {
+        this.snackbarMessage = "Erreur côté serveur"
+        this.showSnackbar = true
+        this.snackbarColor = "error"
+      }) ;
       if (register.status === 200) {
         this.isLogin = true;
+        this.snackbarMessage = "Votre compté à bien été créé !"
+        this.showSnackbar = true
+        this.snackbarColor = "success"
       }
     },
   },

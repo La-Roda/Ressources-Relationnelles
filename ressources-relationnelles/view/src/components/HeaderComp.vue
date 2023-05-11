@@ -1,6 +1,6 @@
 <template>
     <div class="header mx-4 d-flex justify-center">
-    <div class="d-flex align-center fill-height" style="position: absolute; left:15px">
+    <div v-if="getToken !== null" class="d-flex align-center fill-height" style="position: absolute; left:15px">
         <v-btn absolute left icon="mdi-menu" @click="showDrawer"></v-btn>
     </div>
         <div class="d-flex align-center">
@@ -30,12 +30,16 @@
 </style>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
-    name: 'headerComponent',
+    name: 'HeaderComponent',
     data() {
         return {
             search: false
         }
+    },
+    computed: {
+        ...mapGetters(['getToken'])
     },
     methods: {
         showDrawer() {
