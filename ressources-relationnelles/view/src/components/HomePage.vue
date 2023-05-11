@@ -21,7 +21,6 @@
             <v-container>
               <h2>Publier un nouveau post</h2>
               <v-text-field
-                :rules="test"
                 class="mt-3"
                 outlined
                 label="Donnez un titre à votre publication"
@@ -54,6 +53,14 @@
         <span>Il n'y a aucune publication à vous montrer</span>
       </div>
     </div>
+     <v-snackbar
+      v-model="showSnackbar"
+      :timeout="2000"
+      :color="snackbarColor"
+      content-class="snackbar"
+    >
+    {{ snackbarMessage }}
+  </v-snackbar>
   </div>
 </template>
 
@@ -72,10 +79,9 @@ export default {
       dialog: false,
       postTitle: null,
       description: null,
-      test: [
-        (v) => !!v || "Name is required",
-        (v) => (v && v.length <= 10) || "Name must be less than 10 characters",
-      ],
+      snackbarColor: null,
+      showSnackbar: false,
+      snackbarMessage: null
     };
   },
   computed: {
@@ -90,6 +96,10 @@ export default {
         id: this.getUser.id,
         title: this.postTitle,
         description: this.description,
+      }).catch((e) => {
+        this.showSnackbar = true,
+        this.snackbarColor = "error"
+        this.snackbarMessage = "Erreur côté serveur"
       });
       this.dialog = false;
       this.$store.dispatch("getPosts");

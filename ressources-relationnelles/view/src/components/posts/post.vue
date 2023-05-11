@@ -3,15 +3,15 @@
     <v-card-title class="pb-0">
       <div class="d-inline-flex">
         <v-img src="@/assets/profil.png" width="30px"></v-img>
-        <div class="infos_user d-flex flex-column ml-4">
+        <div class="infos_user d-flex flex-column ml-4 justify-center">
           <span>{{ post.username }}</span>
-          <span class="date mt-1"> Il y a 19h </span>
         </div>
       </div>
     </v-card-title>
-    <v-card-text class="mt-3 post-text d-flex flex-column">
+    <v-divider class="mt-1"></v-divider>
+    <v-card-text class=" post-text d-flex flex-column py-2">
       <h2>{{ title }}</h2>
-      <span>{{ description }}</span>
+      <span class="mt-2">{{ description }}</span>
     </v-card-text>
     <v-btn
       variant="text"
@@ -137,11 +137,6 @@ export default {
       edittedPostTitle: this.post.title,
       edittedPostContent: this.post.field,
     };
-  },
-  watch: {
-    edittedPost(val) {
-      console.log(val);
-    },
   },
   computed: {
     ...mapGetters(["getUser", "getLikes"]),

@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import headerComponent from "../components/header.vue";
+import headerComponent from "../components/HeaderComp.vue";
 
 import { defineComponent } from "vue";
 

@@ -1,12 +1,16 @@
 <template>
     <div class="header mx-4 d-flex justify-center">
-    <div class="d-flex align-center fill-height" style="position: absolute; left:15px">
-        <v-btn absolute left icon="mdi-menu" @click="showDrawer"></v-btn>
-    </div>
+        <div v-if="getToken !== null" class="d-flex align-center fill-height" style="position: absolute; left:15px">
+            <v-btn absolute left icon="mdi-menu" @click="showDrawer()"></v-btn>
+        </div>
         <div class="d-flex align-center">
             <v-img src="@/assets/logo_RR.png" fit :width="150" aspect-ratio="16/9"></v-img>
         </div>
+        <div v-if="getToken !== null" class="d-flex align-center fill-height" style="position: absolute; right:15px">
+            <v-btn absolute icon="mdi-power" @click="resetStore()"></v-btn>
+        </div>
     </div>
+    
 </template>
 <style scoped>
 .header {
@@ -30,17 +34,26 @@
 </style>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
-    name: 'headerComponent',
+    name: 'HeaderComponent',
     data() {
         return {
             search: false
         }
     },
+    computed: {
+        ...mapGetters(['getToken'])
+    },
     methods: {
         showDrawer() {
             this.$emit('showDrawer')
+        },
+        resetStore() {
+            this.$store.state.token = null;
+            this.$router.push('/login')
         }
-    }
+    },
+   
 }
 </script>
