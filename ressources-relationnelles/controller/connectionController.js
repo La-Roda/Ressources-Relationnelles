@@ -3,14 +3,17 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const Users = require('../model/users.js');
+const logger = require('../pkg/logger/logger.js');
 
 app.use(bodyParser.json());
 
 module.exports = 
     app.post('/login', async (req, res) => {
         // Recherche de l'utilisateur correspondant à l'adresse email
+	logger.Applog("d: recherche de l'utilisateur correspondant à l'adresse email...");
         const { email, password } = req.body;
-
+	logger.Applog("I: tentative de connexion de ", email, "...");
+	
         const query = `SELECT * FROM users WHERE lower(email) = lower($1);`;
         const params = [email];
 
@@ -18,23 +21,29 @@ module.exports =
             const user_json = result.rows[0];
             try{
                 // Essai d'encapsulation
+		logger.Applog("d: tentative d'encapsulation");
                 const user_obj = new Users(user_json.id, user_json.firstname, user_json.lastname, user_json.username, user_json.email, user_json.password, user_json.permissions_level, user_json.birthday, user_json.sex);
 
                 // Vérification du mot de passe
+		logger.Applog("d: vérification du mot de passe...");
                 user_obj.checkPassword(password).then(verified => {
                     if(verified){
+			logger.Applog("d: mot de passe de ", email, " correct");
                         return res.json(user_obj.toJSON());
                     }else{
+			logger.Applog("W: mot de passe de ", email, " incorrect");
                         throw "incorrect_pass";
                     }
                 }).catch(err => {
+		    logger.Applog("W: nom d\'utilisateur ou mot de passe incorrect: ", err);
                     return res.status(401).send('Nom d\'utilisateur ou mot de passe incorrect.');
                 });
             }catch(e){
+		logger.Applog("W: nom d\'utilisateur ou mot de passe incorrect: ", err);
                 return res.status(401).send('Nom d\'utilisateur ou mot de passe incorrect.');
             }
         }).catch(err => {
-            console.error('Failed to execute query:', err);
+            logger.Applog("E: Echec d'éxecution de la requếte: ", err);
         }).finally(() => {
             //
         });
@@ -48,6 +57,7 @@ app.post('/register', async (req, res) => {
     
     const select_query = `SELECT * FROM users WHERE lower(email) = lower($1);`;
     const select_params = [email];
+    logger.Applog("I: tentative d'enregistrement de ", email, "...");
 
     client.query(select_query, select_params).then(select_result => {
         const user_json = select_result.rows[0];
@@ -61,15 +71,16 @@ app.post('/register', async (req, res) => {
 
                     res.json(newUser_obj.toJSON());
                 }).catch(err => {
+		    logger.Applog('E: failed to execute query:', err);
                     return res.status(401).send("Erreur côté serveur.")
-                    console.error('Failed to execute query:', err);
                 })
             });
         }else{
+	    logger.Applog('W: register failed: ', err);
             return res.status(401).send('Un compte utilisant cette adresse existe déjà.')
         }
     }).catch(err => {
-        console.error('Failed to execute query:', err);
+        logger.Applog('E: Failed to execute query:', err);
     }).finally(() => {
         //
     });

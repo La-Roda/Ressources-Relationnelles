@@ -5,7 +5,7 @@ CREATE TABLE archives (
   title VARCHAR(255),
   field TEXT NOT NULL,
   post_date DATE NOT NULL,
-  archiving_dare DATE NOT NULL,
+  archiving_date DATE NOT NULL,
 
   CONSTRAINT pk_archives PRIMARY KEY (id)
 );

@@ -31,7 +31,7 @@ CREATE TABLE public.archives (
     title character varying(255),
     field text NOT NULL,
     post_date date NOT NULL,
-    archiving_dare date NOT NULL
+    archiving_date date NOT NULL
 );
 ALTER TABLE public.archives OWNER TO postgres;
 
