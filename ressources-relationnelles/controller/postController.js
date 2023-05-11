@@ -73,19 +73,20 @@ app.post('/create', (req, res) => {
             logger.Applog("E: Echec d'éxecution de la requếte: ", err);
             return res.status(401).send("Erreur côté serveur.")
         })
-    logger.Applog("u: nouvel article mis en ligne par l'utilisateur numéro ", id_user);
+    logger.Applog("u: nouvel article mis en ligne par l'utilisateur numéro ", id);
 });
 
 //route pour supprimer l'un de ses articles
 app.post('/delete', (req, res) => {
     // Récupération de l'ID de l'article à supprimer
     const { id_post } = req.body;
-    const archive_query = "INSERT INTO archives (id_users, title, field, post_date, archiving_date) VALUES ((SELECT id_users, title, field, post_date  FROM article WHERE id = $1), $2)";
+    const archive_query = "INSERT INTO archives (id_users, title, field, post_date, archiving_date) VALUES ((SELECT id_users, title, field, post_date  FROM article WHERE id = $1), to_timestamp($2 / 1000.0))";
+    const archive_params = [ id_post, Date.now() ];
     const delete_query = "DELETE FROM article WHERE id = $1";
     const date = Date.now();
 
     logger.Applog("d: tentative de suppression de l'article numéro ", id_post)
-    client.query(archive_query, [id_post], date)
+    client.query(archive_query, archive_params)
         .then(archive_result => {
 	    logger.Applog("d: article numéro ", id_post, "copié dans la table archives avec succès");
 	    //suppression
