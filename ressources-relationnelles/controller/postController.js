@@ -86,10 +86,11 @@ app.post('/delete', (req, res) => {
 
     logger.Applog("d: tentative de suppression de l'article numéro ", id_post)
     client.query(archive_query, [id_post], date)
-        .then(() => {
+        .then(archive_result => {
 	    logger.Applog("d: article numéro ", id_post, "copié dans la table archives avec succès");
+	    //suppression
             client.query(delete_query, [id_post])
-		.then(() => {
+		.then(delete_result => {
 		    res.send('Post supprimé avec succès.');
 		})
 		.catch(err => {
