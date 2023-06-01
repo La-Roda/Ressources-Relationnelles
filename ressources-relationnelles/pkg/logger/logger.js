@@ -59,37 +59,37 @@ const levelPerChar = {
 
 //Defini les couleur selon le niveau de log pour systeme Unix
 const unixColorPerChar = {
-    'E': colors.UnixColorRed,
-    'U': colors.UnixColorLPurple,
-    'W': colors.UnixColorYellow,
-    'I': colors.UnixColorLGreen,
-    'D': colors.UnixColorLBlue,
-    'd': colors.UnixColorDBlue,
-    'F': colors.UnixColorDGreen,
-    'u': colors.UnixColorBrown,
-    'v': colors.UnixColorDPurple,
-    'M': colors.UnixColorDCyan,
-    'm': colors.UnixColorGrey
+    'E': unixColors.UnixColorRed,
+    'U': unixColors.UnixColorLPurple,
+    'W': unixColors.UnixColorYellow,
+    'I': unixColors.UnixColorLGreen,
+    'D': unixColors.UnixColorLBlue,
+    'd': unixColors.UnixColorDBlue,
+    'F': unixColors.UnixColorDGreen,
+    'u': unixColors.UnixColorBrown,
+    'v': unixColors.UnixColorDPurple,
+    'M': unixColors.UnixColorDCyan,
+    'm': unixColors.UnixColorGrey
 };
 
 //Defini les couleur selon le niveau de log pour systeme Windows
 const windowsColorPerChar = {
-    'E': colors.WindowsColorRed,
-    'U': colors.WindowsColorLPurple,
-    'W': colors.WindowsColorYellow,
-    'I': colors.WindowsColorLGreen,
-    'D': colors.WindowsColorLBlue,
-    'd': colors.WindowsColorDBlue,
-    'F': colors.WindowsColorDGreen,
-    'u': colors.WindowsColorBrown,
-    'v': colors.WindowsColorDPurple,
-    'M': colors.WindowsColorDCyan,
-    'm': colors.WindowsColorGrey
+    'E': windowsColors.WindowsColorRed,
+    'U': windowsColors.WindowsColorLPurple,
+    'W': windowsColors.WindowsColorYellow,
+    'I': windowsColors.WindowsColorLGreen,
+    'D': windowsColors.WindowsColorLBlue,
+    'd': windowsColors.WindowsColorDBlue,
+    'F': windowsColors.WindowsColorDGreen,
+    'u': windowsColors.WindowsColorBrown,
+    'v': windowsColors.WindowsColorDPurple,
+    'M': windowsColors.WindowsColorDCyan,
+    'm': windowsColors.WindowsColorGrey
 };
 
 const args = []
 
-function ApplogUnix(msg, ...args) {
+function Applog(msg, ...args) {
     if (msg === "") {
 	return;
     }
@@ -99,7 +99,7 @@ function ApplogUnix(msg, ...args) {
 	lvl = 10;
     }
 
-    const logColor = unixColorPerChar[msg[0]];
+    const [logColor, colorReset] = SetColor(msg)
     const colorEnabled = true; // Votre choix ici pour activer ou désactiver la couleur
 
     const stack = new Error().stack.split("\n");
@@ -111,7 +111,7 @@ function ApplogUnix(msg, ...args) {
 			// Format: '2012-11-04 14:55:45';
 
     if (lvl <= verbosity) {
-	const logs = `${logColor}${util.format(msg, ...args)}${unixColors.ColorReset}`
+	const logs = `${logColor}${util.format(msg, ...args)}${colorReset}`
 	switch(lvl){
 	case 3:
 	    console.log(`[${currentDate}| ${file}:${line}] ${logs}`);
@@ -125,51 +125,20 @@ function ApplogUnix(msg, ...args) {
     }
 }
 
-function ApplogWindows(msg, ...args) {
-    if (msg === "") {
-	return;
-    }
-
-    let lvl = levelPerChar[msg[0]];
-    if (lvl === undefined) {
-	lvl = 10;
-    }
-
-    const logColor = windowsColorPerChar[msg[0]];
-    const colorEnabled = true; // Votre choix ici pour activer ou désactiver la couleur
-
-    const stack = new Error().stack.split("\n");
-    const fileLine = stack[2].split(' ').slice(-1)[0].split(':');
-    const file = path.basename(fileLine[0]);
-    const line = fileLine[1];
-
-    const currentDate = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
-			// Format: '2012-11-04 14:55:45';
-
-    if (lvl <= verbosity) {
-	const logs = `${logColor}${util.format(msg, ...args)}${windowsColors.ColorReset}`
-	switch(lvl){
-	case 3:
-	    console.log(`[${currentDate}| ${file}:${line}] ${logs}`);
-	    break;
-	case 4:
-	    console.log(`[${currentDate}| ${file}:${line}] ${logs}`);
-	    break;
-	default:
-	    console.log(`[${currentDate}] ${logs}`);
-	}
-    }
-}
-
-function Applog(msg, ...args){
+function SetColor(msg) {
     const plateform = os.platform();
-    if os == "win32" {
-	ApplogWindows(msg, ...args)
-    } else if os == "linux" {
-	ApplogUnix(msg, ...args)
+    if (plateform == "win32") {
+	const logColor = windowsColors.WindowsColorPerChar[msg[0]];
+	const reset =  WindowsColorReset
+	return [logColor, reset]
+    } else if (plateform == "linux") {
+	const logColor = unixColorPerChar[msg[0]];
+	const reset =  unixColors.UnixColorReset
+	return [logColor, reset]
     } else {
 	console.log("Erreur: Système non supporté\n")
-    }
+	return
+    } 
 }
 
 
