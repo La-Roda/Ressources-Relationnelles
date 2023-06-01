@@ -100,6 +100,9 @@ function Applog(msg, ...args) {
     }
 
     const [logColor, colorReset] = SetColor(msg)
+    if (logColor == "") {
+	return;
+    }
     const colorEnabled = true; // Votre choix ici pour activer ou désactiver la couleur
 
     const stack = new Error().stack.split("\n");
@@ -129,15 +132,15 @@ function SetColor(msg) {
     const plateform = os.platform();
     if (plateform == "win32") {
 	const logColor = windowsColors.WindowsColorPerChar[msg[0]];
-	const reset =  WindowsColorReset
+	const reset =  WindowsColorReset;
 	return [logColor, reset]
     } else if (plateform == "linux") {
 	const logColor = unixColorPerChar[msg[0]];
-	const reset =  unixColors.UnixColorReset
-	return [logColor, reset]
+	const reset =  unixColors.UnixColorReset;
+	return [logColor, reset];
     } else {
-	console.log("Erreur: Système non supporté\n")
-	return
+	console.log("Erreur: Système non supporté\n");
+	return ["", ""];
     } 
 }
 
