@@ -72,7 +72,6 @@ const unixColorPerChar = {
     'm': colors.UnixColorGrey
 };
 
-
 //Defini les couleur selon le niveau de log pour systeme Windows
 const windowsColorPerChar = {
     'E': colors.WindowsColorRed,
@@ -87,7 +86,6 @@ const windowsColorPerChar = {
     'M': colors.WindowsColorDCyan,
     'm': colors.WindowsColorGrey
 };
-
 
 const args = []
 
@@ -126,7 +124,6 @@ function ApplogUnix(msg, ...args) {
 	}
     }
 }
-
 
 function ApplogWindows(msg, ...args) {
     if (msg === "") {
