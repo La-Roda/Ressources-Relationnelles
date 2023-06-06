@@ -22,7 +22,6 @@ const unixColors = {
     UnixColorWhite: "\x1b[1;97m"
 };
 
-
 //défini les codes couleurs pour les système Windows
 const windowsColors = {
     WindowsColorReset: "\u001b[0m",
@@ -40,7 +39,6 @@ const windowsColors = {
     WindowsColorGrey: "\u001b[1;37m",
     WindowsColorWhite: "\u001b[1;97m"
 };
-
 
 //Defini le le niveau de log en fonction du type de message
 const levelPerChar = {
@@ -143,7 +141,6 @@ function SetColor(msg) {
 	return ["", ""];
     } 
 }
-
 
 function SetVerbosity(lvl) {
     verbosity = lvl;
