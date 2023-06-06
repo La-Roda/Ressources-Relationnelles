@@ -134,7 +134,7 @@ function SetColor(msg) {
 	const logColor = windowsColors.WindowsColorPerChar[msg[0]];
 	const reset =  WindowsColorReset;
 	return [logColor, reset]
-    } else if (plateform == "linux") {
+    } else if ((plateform == "linux") || (plateform == "darwin")) {
 	const logColor = unixColorPerChar[msg[0]];
 	const reset =  unixColors.UnixColorReset;
 	return [logColor, reset];
