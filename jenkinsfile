@@ -8,6 +8,9 @@ pipeline {
                     sh 'npm install' // Installer les dépendances front-end si nécessaire
                     sh 'npm run build' // Builder la partie front de votre projet
                 }
+                dir('ressources-relationnelles/view/dist') {
+                    ftpPublisher alwaysPublishFromMaster: false, continueOnError: false, failOnError: false, publishers: [[configName: 'Serveur front', transfers: [[asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'www', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '**/*.*']], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false]]
+                }
             } 
         }
         stage('Test') {
