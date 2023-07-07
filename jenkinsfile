@@ -4,14 +4,11 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                dir('ressources-relationnelles/view/') { // Change to the desired directory
-                    node('Node.js') {
-                        sh 'npm install' // Install front-end dependencies if needed
-                        sh 'npm run build' // Build the front-end of your project
-                    }
+                dir('ressources-relationnelles/view/') { // Changer vers le répertoire souhaité
+                    sh 'npm install' // Installer les dépendances front-end si nécessaire
+                    sh 'npm run build' // Builder la partie front de votre projet
                 }
-            }
-            
+            } 
         }
         stage('Test') {
             steps {
