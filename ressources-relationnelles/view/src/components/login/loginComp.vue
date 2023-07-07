@@ -2,7 +2,7 @@
     <v-container class="login-card">
         <v-card>
             <div class="pa-3 d-flex flex-column">
-            <h2 class="mb-3">Se connecter Alexis le petit con</h2>
+            <h2 class="mb-3">Se connecter</h2>
                 <v-text-field v-model="login" variant="outlined" class="text-input" label="Login" name="login"></v-text-field>
                 <v-text-field v-model="password" variant="outlined" type="password" class="text-input" label="Mot de passe" name="password"></v-text-field>
                 <v-btn color="#009C9B" class="rounded-pill" @click="initLogin">Se connecter</v-btn>
