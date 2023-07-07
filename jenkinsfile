@@ -45,7 +45,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                echo 'Testing..wwsscc'
+                echo 'Testing..wwssccxx'
             }
         }
         stage('Test back') {
