@@ -13,7 +13,7 @@ pipeline {
                         alwaysPublishFromMaster: false,
                         continueOnError: false,
                         failOnError: false,
-                        masterNodeName: any, // Add the masterNodeName parameter with a valid value
+                        masterNodeName: '', // Add the masterNodeName parameter with a valid value
                         paramPublish: new jenkins.plugins.publish_over_ftp.BapFtpParamPublish(), // Add the paramPublish parameter with a valid value
                         publishers: [
                             [
