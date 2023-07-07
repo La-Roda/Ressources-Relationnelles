@@ -14,7 +14,6 @@ pipeline {
                         continueOnError: false,
                         failOnError: false,
                         masterNodeName: any, // Add the masterNodeName parameter with a valid value
-                        paramPublish: '', // Add the paramPublish parameter with a valid value
                         publishers: [
                             [
                                 configName: 'Serveur front',
