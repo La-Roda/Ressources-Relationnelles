@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'cd ressources-relationelles/'
+                sh 'cd ressources-relationnelles/'
                 sh 'cd view/'
                 sh 'npm run build'
             }
