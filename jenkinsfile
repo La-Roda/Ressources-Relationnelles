@@ -5,8 +5,17 @@ pipeline {
         stage('Build') {
             steps {
                 dir('ressources-relationnelles/view/') { // Changer vers le répertoire souhaité
+                node {
+                    env.NODEJS_HOME = "${tool 'Node 6.x'}"
+                    // on linux / mac
+                    env.PATH="${env.NODEJS_HOME}/bin:${env.PATH}"
+                    // on windows
+                    env.PATH="${env.NODEJS_HOME};${env.PATH}"
+                    sh 'npm --version'
                     sh 'npm install' // Installer les dépendances front-end si nécessaire
                     sh 'npm run build' // Builder la partie front de votre projet
+                }
+                    
                 }
             } 
         }
