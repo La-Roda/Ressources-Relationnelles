@@ -21,7 +21,7 @@ pipeline {
                                 transfers: [
                                     [
                                         asciiMode: false,
-                                        cleanRemote: true,
+                                        cleanRemote: false,
                                         excludes: '',
                                         flatten: false,
                                         makeEmptyDirs: false,
