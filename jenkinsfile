@@ -5,8 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'cd ressources-relationnelles/'
-                sh 'cd view/'
-                sh 'npm run build'
+                sh 'ls'
             }
         }
         stage('Test') {
