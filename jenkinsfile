@@ -27,7 +27,7 @@ pipeline {
                                         makeEmptyDirs: false,
                                         noDefaultExcludes: false,
                                         patternSeparator: '[, ]+',
-                                        remoteDirectory: '',
+                                        remoteDirectory: 'www',
                                         remoteDirectorySDF: false,
                                         removePrefix: '',
                                         sourceFiles: '**/*.*'
