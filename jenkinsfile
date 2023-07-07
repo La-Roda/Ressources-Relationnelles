@@ -5,8 +5,12 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'cd ressources-relationnelles/view/'
-                sh 'npm run build'
+                node('Node.js') {
+                    sh 'npm install' // Install front-end dependencies if needed
+                    sh 'npm run build' // Build the front-end of your project
+                }
             }
+            
         }
         stage('Test') {
             steps {
