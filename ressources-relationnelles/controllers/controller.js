@@ -1,6 +1,7 @@
 const Constants = require('./constants'); //Importer le fichier constants.js
 const View = require('./view'); //Importer le fichier view.js
 
+
 class Controller {
   constructor(url) {
     this._url = {};
