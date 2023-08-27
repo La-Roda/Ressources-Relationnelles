@@ -26,7 +26,3 @@ Exemple :
   
   RR-15
 ```
-
-
-
-Et surtout : QUOICOUBEH
