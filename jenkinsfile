@@ -13,7 +13,7 @@ pipeline {
             steps {
                 echo 'Testing..'
                 dir('ressources-relationnelles/view/') { // Changer vers le répertoire souhaité
-                    //sh 'jest' // Installer les dépendances front-end si nécessaire
+                    sh 'jest' // Installer les dépendances front-end si nécessaire
                     echo 'test2'
                 }
             }
