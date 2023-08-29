@@ -2,7 +2,7 @@
   <v-container class="login-card">
     <v-card>
       <div class="pa-3 d-flex flex-column">
-        <h2 class="mb-3">Se connecter a l'application</h2>
+        <h2 class="mb-3">Se connecter</h2>
         <v-text-field
           v-model="login"
           variant="outlined"
