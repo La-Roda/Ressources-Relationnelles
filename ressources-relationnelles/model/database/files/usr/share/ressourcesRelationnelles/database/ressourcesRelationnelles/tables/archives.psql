@@ -1,0 +1,27 @@
+CREATE TABLE archives (
+  id SERIAL NOT NULL,
+  id_users INTEGER NOT NULL,
+  id_article INTEGER,
+  title VARCHAR(255),
+  field TEXT NOT NULL,
+  post_date DATE NOT NULL,
+  archiving_date DATE NOT NULL,
+
+  CONSTRAINT pk_archives PRIMARY KEY (id)
+);
+
+ALTER TABLE archives
+  ADD CONSTRAINT fk_archives_id_users
+  FOREIGN KEY (id_users)
+    REFERENCES users(id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+;
+
+ALTER TABLE archives
+  ADD CONSTRAINT fk_archives_id_article
+  FOREIGN KEY (id_article)
+    REFERENCES article(id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+;

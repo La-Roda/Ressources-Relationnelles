@@ -1,11 +1,20 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+
+const client = require('./controller/connectionDatabase.js')
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv')
+const Users = require('./model/users.js')
+const connectionController = require('./controller/connectionController.js');
+const postController = require('./controller/postController.js');
+
 dotenv.config();
 
 app.use(cors())
+app.use('/authentication', connectionController);
+app.use('/posts', postController);
+
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
@@ -22,8 +31,8 @@ app.post('/api/login', (req, res) => {
   const { email, password } = req.body;
 
   // Check if email and password are valid
-  if (email === 'user@example.com' && password === 'password123') {
-    login('adrien', 'la_pute');
+  if (email === 'test' && password === 'test') {
+    login('test', 'test');
     // Return a success message and a token
     res.json({
       message: 'Login successful',
@@ -41,15 +50,6 @@ app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
 
-const { Client } = require('pg');
-
-const client = new Client({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE
-});
 
 client.connect((err) => {
   if (err) {
@@ -63,15 +63,17 @@ client.connect((err) => {
 
 
 function login(email, password) {
-    console.log("test")
-    client.query('SELECT * FROM public.users WHERE login = \''+email+'\' AND password = \''+password+'\';', (err, res) => {
-        if (err) {
-          console.error('Failed to execute query:', err);
-        } else {
-          console.log(res.rows);
-        }
-      });
+  const query = "SELECT * FROM public.users WHERE login = '$1' AND password = '$2';";
+  const params = [email, password];
+  client.query(query, params, (err, res) => {
+    if (err) {
+      console.error('Failed to execute query:', err);
+    } else {
+      console.log(res.rows);
+    }
+  });
 }
+
 // Fermeture de la connexion
 // client.end((err) => {
 //   if (err) {

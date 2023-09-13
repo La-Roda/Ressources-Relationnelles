@@ -1,4 +1,5 @@
 <template>
+
   <v-container class="login-card">
     <v-card>
       <div class="pa-3 d-flex flex-column">
@@ -23,6 +24,7 @@
         >
       </div>
     </v-card>
+
   </v-container>
 </template>
 
@@ -34,6 +36,10 @@
 }
 </style>
 <script>
+import VueDatePicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
+import axios from "axios";
+
 export default {
   data() {
     return {
