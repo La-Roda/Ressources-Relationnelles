@@ -1,0 +1,27 @@
+CREATE TABLE comment (
+  id SERIAL NOT NULL,
+  id_users INTEGER NOT NULL,
+  id_article INTEGER NOT NULL,
+  field TEXT NOT NULL,
+  nb_likes INTEGER DEFAULT 0,
+  nb_dislikes INTEGER DEFAULT 0,
+  post_date DATE NOT NULL,
+
+  CONSTRAINT pk_comment PRIMARY KEY (id)
+);
+
+ALTER TABLE comment
+  ADD CONSTRAINT fk_comment_id_article
+  FOREIGN KEY (id_article)
+    REFERENCES article(id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+;
+
+ALTER TABLE comment
+  ADD CONSTRAINT fk_comment_id_users
+  FOREIGN KEY (id_users)
+    REFERENCES users(id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+;

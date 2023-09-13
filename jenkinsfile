@@ -1,21 +1,62 @@
 pipeline {
     agent any
-
+    tools {nodejs "Node"}
     stages {
-        stage('Build') {
+
+        stage('Test back') {
             steps {
-                echo 'Building..'
+                //sh 'jest'
+                echo 'test'
             }
         }
-        stage('Test') {
+        stage('test front') {
             steps {
                 echo 'Testing..'
+                dir('ressources-relationnelles/view/') { // Changer vers le répertoire souhaité
+                    echo 'test2'
+                }
             }
         }
-        stage('Deploy') {
+        stage('Build & Deploy') {
             steps {
-                echo 'Deploying....'
-            }
+                dir('ressources-relationnelles/view/') { // Changer vers le répertoire souhaité
+                    sh 'npm install' // Installer les dépendances front-end si nécessaire
+                    sh 'npm run build' // Builder la partie front de votre projet
+                }
+                dir('ressources-relationnelles/view/dist') {
+                    ftpPublisher(
+                         alwaysPublishFromMaster: false, // Ne pas publier toujours depuis le nœud maître
+    continueOnError: false, // Ne pas continuer en cas d'erreur
+    failOnError: false, // Ne pas échouer en cas d'erreur
+    masterNodeName: '', // Ajoutez ici le nom du nœud maître
+    paramPublish: [ parameterName: "" ], // Ajoutez ici un paramètre de publication
+    publishers: [
+        [
+            configName: 'Serveur front', // Nom de la configuration du serveur frontal
+            transfers: [
+                [
+                    asciiMode: false, // Mode ASCII désactivé
+                    cleanRemote: true, // Nettoyer les fichiers distants
+                    excludes: '', // Aucune exclusion de fichiers
+                    flatten: false, // Ne pas aplatir la structure des fichiers
+                    makeEmptyDirs: false, // Ne pas créer de répertoires vides
+                    noDefaultExcludes: false, // Ne pas désactiver les exclusions par défaut
+                    patternSeparator: '[, ]+', // Séparateur de motifs de fichiers
+                    remoteDirectory: '', // Répertoire distant (à spécifier)
+                    remoteDirectorySDF: false, // Ne pas utiliser de répertoire distant SDF
+                    removePrefix: '', // Préfixe à supprimer (le cas échéant)
+                    sourceFiles: '**/*.*' // Motif des fichiers source (tous les fichiers)
+                ]
+            ],
+            usePromotionTimestamp: false, // Ne pas utiliser le timestamp de promotion
+            useWorkspaceInPromotion: false, // Ne pas utiliser l'espace de travail dans la promotion
+            verbose: false // Mode verbeux désactivé
+                            ]
+                        ]
+                    )
+
+                }
+            } 
         }
     }
 }

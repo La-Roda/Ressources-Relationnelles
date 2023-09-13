@@ -1,0 +1,14 @@
+CREATE TABLE users (
+  id SERIAL NOT NULL,
+  firstname VARCHAR(64) NOT NULL,
+  lastname VARCHAR(64) NOT NULL,
+  username VARCHAR(64) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  permissions_level INTEGER DEFAULT 1,
+  birthday DATE NOT NULL,
+  sex VARCHAR(64) NOT NULL,
+
+  CONSTRAINT pk_users PRIMARY KEY (id),
+  CONSTRAINT uk_users UNIQUE (email)
+);
